@@ -1,0 +1,40 @@
+ip: 192.168.56.56
+memory: 2048
+cpus: 2
+provider: virtualbox
+name: vxproject-flags-vbox
+hostname: homestead
+
+authorize: ~/.ssh/id_rsa.pub
+keys:
+  - ~/.ssh/id_rsa
+
+folders:
+  -
+    map: ~/Projects/vxproject-flags
+    to: /var/www/vxproject-flags
+
+sites:
+  -
+    map: vxproject-flags.test
+    to: /var/www/vxproject-flags/public
+    php: "8.1"
+
+databases:
+  - vxproject_flags
+
+features:
+  -
+    mysql: false
+  -
+    mariadb: false
+  -
+    postgresql: true
+  -
+    ohmyzsh: false
+  -
+    webdriver: false
+services:
+  -
+    enabled:
+      - "postgresql@13-main"
