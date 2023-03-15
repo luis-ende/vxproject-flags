@@ -25,7 +25,8 @@ defineProps({
 
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <div class="mt-16">
-                <h1 class="text-indigo-600 font-bold uppercase">VX Project Flags - Próximamente....</h1>
+                <h1 class="text-indigo-600 font-bold uppercase">VX Project Flags</h1>
+                <h1 class="text-indigo-600 font-bold uppercase">Próximamente....</h1>
             </div>
         </div>
     </div>
