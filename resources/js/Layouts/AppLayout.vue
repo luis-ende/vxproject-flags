@@ -75,23 +75,23 @@ const logout = () => {
                                             <!-- Team Management -->
                                             <template v-if="$page.props.jetstream.hasTeamFeatures">
                                                 <div class="block px-4 py-2 text-xs text-gray-400">
-                                                    Manage Team
+                                                    Administrar grupo
                                                 </div>
 
                                                 <!-- Team Settings -->
                                                 <DropdownLink :href="route('teams.show', $page.props.auth.user.current_team)">
-                                                    Team Settings
+                                                    Configuración de grupo
                                                 </DropdownLink>
 
                                                 <DropdownLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')">
-                                                    Create New Team
+                                                    Crear nuevo grupo
                                                 </DropdownLink>
 
                                                 <div class="border-t border-gray-200" />
 
                                                 <!-- Team Switcher -->
                                                 <div class="block px-4 py-2 text-xs text-gray-400">
-                                                    Switch Teams
+                                                    Cambiar de grupo
                                                 </div>
 
                                                 <template v-for="team in $page.props.auth.user.all_teams" :key="team.id">
