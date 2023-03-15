@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+  app:
+      build:
+        args:
+          user: "$(whoami)"
+          uid: "$(id -u)"
+        context: ./
+        dockerfile: app.dockerfile
+      image: vxproject-flags
+      container_name: vxproject-flags-app
+      restart: unless-stopped
+      working_dir: /var/www/
+      volumes:
+        - ./:/var/www
+      networks:
+        - vxproject-flags
+
+  postgres:
+    image: postgres:13.2
+    container_name: vxproject-flags-db
+    restart: unless-stopped
+    ports:
+        - "5435:5432"
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: postgres
+    volumes:
+      - ./docker-compose/pgsql:/docker-entrypoint-initdb.d
+    networks:
+      - vxproject-flags
+
+  nginx:
+    image: nginx:stable
+    container_name: vxproject-flags-nginx
+    restart: unless-stopped
+    ports:
+      - "8001:80"
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      vxproject-flags:
+        aliases:
+            - vxproject-flags.test
+
+
+networks:
+  vxproject-flags:
+    driver: bridge
