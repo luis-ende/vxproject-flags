@@ -20,6 +20,17 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    /*public bool $is_subscriber = true;
+    protected string $test123 = 'ABC';*/
+
+    public function getIsSubscriberAttribute()
+    {
+        $teamSubscribers = Team::where('name', 'Suscriptores')->first();
+
+        return $this->belongsToTeam($teamSubscribers) && !$this->ownsTeam($teamSubscribers);
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -57,5 +68,6 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'is_subscriber'
     ];
 }

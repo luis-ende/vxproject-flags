@@ -65,7 +65,7 @@ const closeModal = () => {
                 </template>
 
                 <template #content>
-                    Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.
+                  ¿Deseas borrar tu cuenta? Una vez borrada tu cuenta, toda su información asociada será eliminada de forma permanente. Por favor introduce tu contraseña para confirmar que deseas borrar permanentemente tu cuenta.
 
                     <div class="mt-4">
                         <TextInput
