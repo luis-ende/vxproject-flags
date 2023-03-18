@@ -12,6 +12,9 @@ module.exports = {
 
     theme: {
         extend: {
+            colors: {
+                'vxproject-primary': '#cc00cc',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
