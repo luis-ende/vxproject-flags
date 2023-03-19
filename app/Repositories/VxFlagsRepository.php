@@ -14,7 +14,6 @@ class VxFlagsRepository
                     'id' => $item->id,
                     'type' => $item->type,
                     'name' => $item->nombre,
-                    'description' => $item->descripcion,
                     'color' => $item->color,
                     'flags' => $item->flags->map(function($flag) {
                         return [

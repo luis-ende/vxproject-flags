@@ -203,7 +203,7 @@ const clearVxFlagInfoPanel = () => {
                                 :map="map"
                             />
                         </div>
-                        <div class="basis-1/3 p-5">
+                        <div class="basis-1/3 pr-5">
                             <div class="my-10">
                                 <LocationSearchInput
                                     v-model:lat="searchLocation.lat"

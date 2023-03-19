@@ -16,20 +16,20 @@ class FlagGroupSeeder extends Seeder
     {
         FlagGroup::create([
             'nombre' => 'Temperaturas CFE 2008',
-            'color' => 'mediumpurple',
-            'tipo' => FlagGroupType::TemperaturasCFE->value
+            'color' => '#117864',
+            'type' => FlagGroupType::TemperaturasCFE->value
         ]);
 
         FlagGroup::create([
             'nombre' => 'Temperaturas CFE 2020',
-            'color' => 'red',
-            'tipo' => FlagGroupType::TemperaturasCFE->value
+            'color' => '#A569BD',
+            'type' => FlagGroupType::TemperaturasCFE->value
         ]);
 
         FlagGroup::create([
             'nombre' => 'Tipo de suelo',
-            'color' => 'green',
-            'tipo' => FlagGroupType::TiposSuelo->value
+            'color' => '#B9770E',
+            'type' => FlagGroupType::TiposSuelo->value
         ]);
     }
 }
