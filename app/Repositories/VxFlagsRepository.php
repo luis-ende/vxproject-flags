@@ -16,6 +16,7 @@ class VxFlagsRepository
                     'color' => $item->color,
                     'flags' => $item->flags->map(function($flag) {
                         return [
+                            'id' => $flag->id,
                             'latitude' => $flag->latitude,
                             'longitude' => $flag->longitude,
                             'description' => $flag->description,

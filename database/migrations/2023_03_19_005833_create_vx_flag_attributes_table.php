@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('flag_groups', function (Blueprint $table) {
+        Schema::create('vx_flag_attributes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedSmallInteger('tipo');
-            $table->string('nombre', 255);
-            $table->string('color', 50);
+            $table->foreignId('id_vx_flag')->constrained('vx_flags')->cascadeOnDelete();
+            $table->json('attributes');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('flag_groups');
+        Schema::dropIfExists('vx_flag_attributes');
     }
 };
