@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('flag_groups', function (Blueprint $table) {
             $table->id();
-            $table->unsignedSmallInteger('tipo');
+            $table->unsignedSmallInteger('type');
             $table->string('nombre', 255);
             $table->string('color', 50);
             $table->timestamps();

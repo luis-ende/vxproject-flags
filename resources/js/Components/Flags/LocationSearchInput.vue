@@ -29,7 +29,7 @@ const onClickSearchButton = () => {
         <div>
             <input
                 ref="inputLatitude"
-                class="border focus:ring-vxproject-primary border-vxproject-primary inline-block w-48 h-7"
+                class="border focus:ring-vxproject-primary border-vxproject-primary inline-block w-44 h-7"
                 type="number"
                 :value="lat"
                 @input="$emit('update:lat', parseFloat($event.target.value))"
@@ -37,7 +37,7 @@ const onClickSearchButton = () => {
             <span class="font-bold"> - </span>
             <input
                 ref="inputLongitude"
-                class="border focus:ring-vxproject-primary border-vxproject-primary inline-block w-48 h-7"
+                class="border focus:ring-vxproject-primary border-vxproject-primary inline-block w-44 h-7"
                 type="number"
                 :value="lng"
                 @input="$emit('update:lng', parseFloat($event.target.value))"

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\FlagGroup;
+use App\Models\VxFlagAttributes;
 
 class VxFlagsRepository
 {
@@ -11,6 +12,7 @@ class VxFlagsRepository
         return FlagGroup::all()->map(function($item) {
                 return [
                     'id' => $item->id,
+                    'type' => $item->type,
                     'name' => $item->nombre,
                     'description' => $item->descripcion,
                     'color' => $item->color,
@@ -24,5 +26,10 @@ class VxFlagsRepository
                     })->toArray()
                 ];
         })->toArray();
+    }
+
+    public function getVxFlagAttributes(int $vxFlagId) {
+        return VxFlagAttributes::where('id_vx_flag', $vxFlagId)
+                                    ->value('attributes');
     }
 }
