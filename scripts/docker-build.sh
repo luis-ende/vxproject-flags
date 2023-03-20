@@ -15,6 +15,7 @@ docker compose build --build-arg user="$(whoami)" --build-arg uid="$(id -u)" app
 docker compose --env-file .env up -d
 docker compose exec app rm -f /var/www/public/storage
 docker compose exec app ln -s /var/www/storage/app/public /var/www/public/storage
+docker compose exec app php artisan key:generate
 docker compose exec app composer install
 docker compose exec app npm install
 docker compose exec app npm run build

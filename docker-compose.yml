@@ -16,7 +16,7 @@ services:
       networks:
         - vxproject-flags
 
-  postgres:
+  postgresvx:
     image: postgres:13.2
     container_name: vxproject-flags-db
     restart: unless-stopped
@@ -27,7 +27,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       SERVICE_TAGS: dev
-      SERVICE_NAME: postgres
+      SERVICE_NAME: postgresvx
     volumes:
       - ./docker-compose/pgsql:/docker-entrypoint-initdb.d
     networks:
