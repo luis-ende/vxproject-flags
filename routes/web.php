@@ -29,5 +29,6 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
+    Route::get('/admin-panel', [\App\Http\Controllers\AdminPanelController::class, 'show'])->name('admin-panel');
     Route::get('/vx-flags/info/{flagId}', [\App\Http\Controllers\DashboardController::class, 'getVxFlagInfo'])->name('vx-flags.info');
 });

@@ -26,9 +26,6 @@ const logout = () => {
     router.post(route('logout'));
 };
 
-const isUserSubscriber = () => {
-  usePage().props.auth.user.isSubscriber();
-};
 </script>
 
 <template>
@@ -54,6 +51,9 @@ const isUserSubscriber = () => {
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Escritorio
+                                </NavLink>
+                                <NavLink v-if="!$page.props.auth.user.is_subscriber" :href="route('admin-panel')" :active="route().current('admin-panel')">
+                                    Admin Panel
                                 </NavLink>
                             </div>
                         </div>
