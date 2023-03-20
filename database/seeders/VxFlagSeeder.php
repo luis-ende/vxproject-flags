@@ -14,12 +14,12 @@ class VxFlagSeeder extends Seeder
      */
     public function run(): void
     {
-        $path = base_path('database/data/imports/TEMPERATURAS 2008.xlsx');
+        $path = base_path('database/data/imports/TEMPERATURAS_2008.xlsx');
         $import = new VxFlagsImport(1, FlagGroupType::TemperaturasCFE);
 
         Excel::import($import, $path);
 
-        $path = base_path('database/data/imports/TEMPERATURAS 2020.xlsx');
+        $path = base_path('database/data/imports/TEMPERATURAS_2020.xlsx');
         $import = new VxFlagsImport(2, FlagGroupType::TemperaturasCFE);
 
         Excel::import($import, $path);
