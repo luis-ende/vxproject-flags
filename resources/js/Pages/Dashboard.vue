@@ -14,9 +14,9 @@ const props = defineProps({
 });
 
 // @todo Consider: https://stackoverflow.com/questions/73542576/leaflet-error-when-zooming-after-closing-popup
-const map = ref(null);
-const markersGroup = ref([]);
-const currentLocationMarker = ref(null);
+let map = null;
+let markersGroup = [];
+let currentLocationMarker = null;
 let searchLocation = reactive({
     lat: 19.3886,
     lng: -99.16335,
@@ -55,15 +55,15 @@ const vxFlagInfoTemperatura = reactive({
 });
 
 onMounted(() => {
-    map.value = L.map('map').setView([searchLocation.lat, searchLocation.lng], searchLocation.zoom);
-    map.value.on('click', onMapClick)
-    map.value.on('dblclick', onMapDoubleClick)
+    map = L.map('map').setView([searchLocation.lat, searchLocation.lng], searchLocation.zoom);
+    map.on('click', onMapClick)
+    map.on('dblclick', onMapDoubleClick)
     // @todo Get url from global app settings
     //L.tileLayer('https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=aoG5PxooEJs06nNutrZH', {
     L.tileLayer('https://api.maptiler.com/maps/winter-v2/{z}/{x}/{y}.png?key=aoG5PxooEJs06nNutrZH', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map.value)
+    }).addTo(map)
 });
 
 const onMapClick = (e) => {
@@ -108,11 +108,11 @@ const loadFlags = (group) => {
         });
         marker.on('click', onMarkerClick);
         layerMarkers.push(marker);
-        marker.addTo(toRaw(map.value));
+        marker.addTo(map);
         marker.bindPopup(desc);
     });
 
-    markersGroup.value.push({
+    markersGroup.push({
         id: group.id,
         markers: layerMarkers
     });
@@ -120,11 +120,11 @@ const loadFlags = (group) => {
 
 const clearFlags = (group) => {
     clearVxFlagInfoPanel();
-    let groupMarkers = markersGroup.value.find(gm => gm.id === group.id);
+    let groupMarkers = markersGroup.find(gm => gm.id === group.id);
     groupMarkers.markers.forEach(marker => {
-        map.value.removeLayer(marker);
+        map.removeLayer(marker);
     });
-    markersGroup.value = markersGroup.value.filter(gm => gm.id !== group.id);
+    markersGroup = markersGroup.filter(gm => gm.id !== group.id);
 };
 
 const setSearchLocation = () => {
@@ -137,15 +137,15 @@ const setSearchLocation = () => {
 };
 
 const setMapLocation = (searchLocationInfo) => {
-    map.value.setView([searchLocationInfo.lat, searchLocationInfo.lng], searchLocationInfo.zoom);
+    map.setView([searchLocationInfo.lat, searchLocationInfo.lng], searchLocationInfo.zoom);
 
-    if (currentLocationMarker.value) {
-        map.value.removeLayer(currentLocationMarker.value);
+    if (currentLocationMarker) {
+        map.removeLayer(currentLocationMarker);
     }
 
     let marker = L.marker([searchLocationInfo.lat, searchLocationInfo.lng], { icon: violetIcon });
-    map.value.addLayer(marker);
-    currentLocationMarker.value = marker;
+    map.addLayer(marker);
+    currentLocationMarker = marker;
 }
 
 const onMarkerClick = (e) => {
