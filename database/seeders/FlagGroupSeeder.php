@@ -22,7 +22,7 @@ class FlagGroupSeeder extends Seeder
 
         FlagGroup::create([
             'nombre' => 'Temperaturas CFE 2020',
-            'color' => '#A569BD',
+            'color' => '#943126',
             'type' => FlagGroupType::TemperaturasCFE->value
         ]);
 

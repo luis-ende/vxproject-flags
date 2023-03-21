@@ -22,6 +22,10 @@ let searchLocation = reactive({
     lng: -99.16335,
     zoom: 6,
 });
+const violetIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+});
 const currentVxFlagInfo = reactive({
     active: false,
     groupType: 2,
@@ -135,7 +139,7 @@ const setMapLocation = (searchLocationInfo) => {
         map.value.removeLayer(currentLocationMarker.value);
     }
 
-    let marker = L.marker([searchLocationInfo.lat, searchLocationInfo.lng]);
+    let marker = L.marker([searchLocationInfo.lat, searchLocationInfo.lng], { icon: violetIcon });
     map.value.addLayer(marker);
     currentLocationMarker.value = marker;
 }
