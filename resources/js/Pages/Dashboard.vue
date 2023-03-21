@@ -51,7 +51,8 @@ onMounted(() => {
     map.value.on('click', onMapClick)
     map.value.on('dblclick', onMapDoubleClick)
     // @todo Get url from global app settings
-    L.tileLayer('https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=aoG5PxooEJs06nNutrZH', {
+    //L.tileLayer('https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=aoG5PxooEJs06nNutrZH', {
+    L.tileLayer('https://api.maptiler.com/maps/winter-v2/{z}/{x}/{y}.png?key=aoG5PxooEJs06nNutrZH', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map.value)
