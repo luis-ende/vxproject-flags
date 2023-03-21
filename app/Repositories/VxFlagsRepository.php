@@ -9,7 +9,7 @@ class VxFlagsRepository
 {
     public function getFlagsGroups(): array
     {
-        return FlagGroup::all()->map(function($item) {
+        return FlagGroup::all()->sortBy('id')->map(function($item) {
                 return [
                     'id' => $item->id,
                     'type' => $item->type,
