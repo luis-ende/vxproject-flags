@@ -4,6 +4,10 @@ defineProps({
 });
 
 const formatCoordinates = (text) => {
+    if (!text) {
+        return '';
+    }
+
     let dms = text.split(' ');
     const sec = dms[2];
     dms[2] = parseFloat(sec).toFixed(2).padStart(5, '0') + "''";
