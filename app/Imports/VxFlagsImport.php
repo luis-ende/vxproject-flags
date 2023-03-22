@@ -53,12 +53,13 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow
             unset($rows['15']);
             unset($rows['16']);
             unset($rows['17']);
+            $descripcion = $row['sitio'] . "\n" . $row['sismo'] . ", " . $row['zona'] . " - " . $row['tipo_terreno'];
             $jsonAttr = json_encode($rows);
             $vxFlag = VxFlag::create([
                 'id_flag_group' => $this->flagGroupId,
                 'longitude' => $longitud2,
                 'latitude' => $latitud,
-                'description' => $row['observaciones'],
+                'description' => $descripcion,
             ]);
             VxFlagAttributes::create([
                 'id_vx_flag' => $vxFlag->id,

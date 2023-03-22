@@ -96,7 +96,7 @@ const loadFlags = (group) => {
 
     let layerMarkers = [];
     group.flags.forEach(flag => {
-        let desc = flag.description;
+        let desc = flag.description.replace(/(\r\n|\r|\n)/g, '<br>');
         //@debug desc = desc + ' id: ' + flag.id;
         let customIcon = L.divIcon({
             ...defIcon,
