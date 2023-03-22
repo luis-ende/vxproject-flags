@@ -13,10 +13,12 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                'vxproject-primary': '#cc00cc',
+                'vxproject-primary': '#9900ff',
+                'vxproject-secondary': '#ff00ff',
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Questrial', ...defaultTheme.fontFamily.sans],
+                montserrat: ['Montserrat']
             },
         },
     },
