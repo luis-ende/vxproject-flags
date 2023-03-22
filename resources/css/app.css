@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .vxproject-button {
+        @apply font-montserrat uppercase text-vxproject-primary font-bold text-sm rounded-full border border-vxproject-primary px-3
+        hover:text-vxproject-secondary hover:border-vxproject-secondary;
+    }
+}

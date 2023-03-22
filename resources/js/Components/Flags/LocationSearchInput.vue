@@ -208,7 +208,7 @@ const decToDms = (latData, lngData) => {
                     placeholder="lng">
             </div>
             <button type="button" @click="onClickSearchButton()"
-                    class="font-montserrat uppercase text-vxproject-primary font-bold text-sm rounded-full border border-vxproject-primary px-3">Buscar</button>
+                    class="vxproject-button">Buscar</button>
         </div>
         <span class="text-xs text-red-500 block">{{ errorMessage }}</span>
     </div>
