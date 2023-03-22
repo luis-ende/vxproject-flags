@@ -3,6 +3,14 @@ defineProps({
     flagInfo: Object
 });
 
+const formatCoordinates = (text) => {
+    let dms = text.split(' ');
+    const sec = dms[2];
+    dms[2] = parseFloat(sec).toFixed(2).padStart(5, '0') + "''";
+
+    return dms.join(' ');
+}
+
 </script>
 
 <template>
@@ -13,9 +21,9 @@ defineProps({
                 <div class="text-right border-b border-b-vxproject-secondary">Sitio:</div>
                 <div class="border-b border-b-vxproject-secondary pl-5">{{ flagInfo.sitio }}</div>
                 <div class="text-right border-b border-b-vxproject-secondary">Latitud:</div>
-                <div class="border-b border-b-vxproject-secondary pl-5">{{ flagInfo.latitud }}</div>
+                <div class="border-b border-b-vxproject-secondary pl-5">{{ formatCoordinates(flagInfo.latitud) }}</div>
                 <div class="text-right border-b border-b-vxproject-secondary">Longitud:</div>
-                <div class="border-b border-b-vxproject-secondary pl-5">{{ flagInfo.longitud2 }}</div>
+                <div class="border-b border-b-vxproject-secondary pl-5">{{ formatCoordinates(flagInfo.longitud2) }}</div>
                 <div class="text-right border-b border-b-vxproject-secondary">Sismo:</div>
                 <div class="border-b border-b-vxproject-secondary pl-5">{{ flagInfo.sismo }}</div>
                 <div class="text-right border-b border-b-vxproject-secondary">Zona:</div>
