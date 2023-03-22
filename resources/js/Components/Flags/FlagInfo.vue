@@ -25,17 +25,29 @@ defineProps({
             </div>
             <div class="basis-1/2  grid grid-cols-3 grid-rows-6">
                 <div class="text-right border-b border-b-vxproject-secondary">Capacidad:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">{{ flagInfo.capacidad }} <span class="lowercase">t/m&#179;</span></div>
+                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                    {{ parseFloat(flagInfo.capacidad).toFixed(2) }} <span class="lowercase">t/m&#179;</span>
+                </div>
                 <div class="text-right border-b border-b-vxproject-secondary"><span class="lowercase">Ø</span> Terreno:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">{{ flagInfo.o_terreno }}°</div>
+                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                    {{ parseFloat(flagInfo.o_terreno).toFixed(2) }}°
+                </div>
                 <div class="text-right border-b border-b-vxproject-secondary"><span class="lowercase">δ</span> Terreno:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">{{ flagInfo.d_terreno }} <span class="lowercase">t/m&#179;</span></div>
+                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                    {{ parseFloat(flagInfo.d_terreno).toFixed(2) }} <span class="lowercase">t/m&#179;</span>
+                </div>
                 <div class="text-right border-b border-b-vxproject-secondary">DF Min:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">{{ flagInfo.df_min }}<span class="lowercase">m</span></div>
+                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                    {{ parseFloat(flagInfo.df_min).toFixed(2).toString().padStart(5, '0') }}<span class="lowercase">m</span>
+                </div>
                 <div class="text-right border-b border-b-vxproject-secondary">Proyecto:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">{{ flagInfo.proyecto }}</div>
+                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                    {{ flagInfo.proyecto }}
+                </div>
                 <div class="text-right border-b border-b-vxproject-secondary">Altura:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">{{ flagInfo.altura }}<span class="lowercase">m</span></div>
+                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                    {{ parseFloat(flagInfo.altura).toFixed(2) }}<span class="lowercase">m</span>
+                </div>
             </div>
         </div>
         <span class="block mt-10 mb-5 border-b border-b-vxproject-secondary">Observaciones:</span>
