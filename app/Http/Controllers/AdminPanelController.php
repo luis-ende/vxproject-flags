@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\VxFlagsRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AdminPanelController extends Controller
 {
-    public function show()
+    public function show(VxFlagsRepository $flagsRepo)
     {
-        return Inertia::render('AdminPanel');
+        $flagsGroups = $flagsRepo->getFlagsGroups();
+
+        return Inertia::render('ConfigPanel', compact('flagsGroups'));
     }
 }

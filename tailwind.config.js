@@ -13,6 +13,7 @@ module.exports = {
     theme: {
         extend: {
             colors: {
+                'primary': '#9900ff',
                 'vxproject-primary': '#9900ff',
                 'vxproject-secondary': '#ff00ff',
             },
