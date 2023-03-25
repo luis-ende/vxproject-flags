@@ -49,12 +49,12 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+<!--                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Escritorio
                                 </NavLink>
                                 <NavLink v-if="!$page.props.auth.user.is_subscriber" :href="route('admin-panel')" :active="route().current('admin-panel')">
                                     Admin Panel
-                                </NavLink>
+                                </NavLink>-->
                             </div>
                         </div>
 
@@ -194,11 +194,11 @@ const logout = () => {
 
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
-                    <div class="pt-2 pb-3 space-y-1">
+<!--                    <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Escritorio
                         </ResponsiveNavLink>
-                    </div>
+                    </div>-->
 
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
@@ -277,7 +277,7 @@ const logout = () => {
 
             <!-- Page Heading -->
             <header v-if="$slots.header" class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>

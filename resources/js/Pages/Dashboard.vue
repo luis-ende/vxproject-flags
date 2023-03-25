@@ -5,6 +5,7 @@ import FlagsGroupSelect from "../Components/Flags/FlagsGroupSelect.vue";
 import {onMounted, reactive, ref, toRaw} from "vue";
 import FlagInfo from "../Components/Flags/FlagInfo.vue";
 import LocationSearchInput from "../Components/Flags/LocationSearchInput.vue";
+import FieldLogo from "../Components/FieldLogo.vue";
 
 const props = defineProps({
     flagsGroups: {
@@ -198,12 +199,12 @@ const clearVxFlagInfoPanel = () => {
 <template>
     <AppLayout title="Escritorio">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Escritorio
-            </h2>
+            <div class="ml-2 w-24 h-10">
+                <FieldLogo />
+            </div>
         </template>
 
-        <div class="py-12">
+        <div class="py-6">
             <div class="max-w-full mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="flex flex-row h-[750px]">

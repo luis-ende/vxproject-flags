@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\FlagGroup;
 use App\Models\FlagGroupType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FlagGroupSeeder extends Seeder
@@ -16,19 +15,19 @@ class FlagGroupSeeder extends Seeder
     {
         FlagGroup::create([
             'nombre' => 'Temperaturas CFE 2008',
-            'color' => '#117864',
+            'color' => '#FE8100',
             'type' => FlagGroupType::TemperaturasCFE->value
         ]);
 
         FlagGroup::create([
             'nombre' => 'Temperaturas CFE 2020',
-            'color' => '#943126',
+            'color' => '#00FF03',
             'type' => FlagGroupType::TemperaturasCFE->value
         ]);
 
         FlagGroup::create([
             'nombre' => 'Tipo de suelo',
-            'color' => '#B9770E',
+            'color' => '#0380FE',
             'type' => FlagGroupType::TiposSuelo->value
         ]);
     }
