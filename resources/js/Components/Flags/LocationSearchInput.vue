@@ -1,6 +1,6 @@
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 
 const emit = defineEmits([
     'search',
@@ -36,6 +36,28 @@ const lngData = reactive({
 const errorMessage = ref('');
 
 onMounted(() => {
+    updateDecToDms();
+});
+
+watch(() => props.lng, () => {
+    updateDecToDms();
+})
+
+const onClickSearchButton = () => {
+    let coordinates = { lat: props.lat, lng: props.lng }
+    if (sistemaC.value === 'grados') {
+        coordinates = dmsToDec(latData, lngData);
+    } else if (sistemaC.value === 'decimales') {
+        updateDecToDms();
+    }
+
+    emit('update:lat', coordinates.lat);
+    emit('update:lng', coordinates.lng);
+
+    emit('search');
+};
+
+const updateDecToDms = () => {
     const dmsCoordinates = decToDms(props.lat, props.lng);
     latData.deg = dmsCoordinates.lat.deg;
     latData.min = dmsCoordinates.lat.min;
@@ -43,26 +65,6 @@ onMounted(() => {
     lngData.deg = dmsCoordinates.lng.deg;
     lngData.min = dmsCoordinates.lng.min;
     lngData.sec = dmsCoordinates.lng.sec;
-});
-
-const onClickSearchButton = () => {
-    let coordinates = { lat: props.lat, lng: props.lng }
-    if (sistemaC.value === 'grados') {
-        coordinates = dmsToDec(latData, lngData);
-    } else if (sistemaC.value === 'decimales') {
-        const dmsCoordinates = decToDms(props.lat, props.lng);
-        latData.deg = dmsCoordinates.lat.deg;
-        latData.min = dmsCoordinates.lat.min;
-        latData.sec = dmsCoordinates.lat.sec;
-        lngData.deg = dmsCoordinates.lng.deg;
-        lngData.min = dmsCoordinates.lng.min;
-        lngData.sec = dmsCoordinates.lng.sec;
-    }
-
-    emit('update:lat', coordinates.lat);
-    emit('update:lng', coordinates.lng);
-
-    emit('search');
 };
 
 const validateNumericInput = (i) => {
