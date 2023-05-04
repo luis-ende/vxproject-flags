@@ -6,6 +6,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import FieldLogo from "../../Components/FieldLogo.vue";
 
 defineProps({
     status: String,
@@ -21,15 +22,18 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Forgot Password" />
+    <Head title="VX Project Field - Reestablecer contraseña" />
 
     <AuthenticationCard>
         <template #logo>
             <AuthenticationCardLogo />
+            <div class="w-48 h-16">
+                <FieldLogo />
+            </div>
         </template>
 
         <div class="mb-4 text-sm text-gray-600">
-            ¿Olvidó su contraseña? No hay problema. Simplemente déjenos saber su dirección de correo electrónico y le enviaremos un enlace para restablecer la contraseña que le permitirá elegir una nueva.
+            ¿Olvidaste tu contraseña? No hay problema. Compártenos tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
         </div>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -38,7 +42,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Correo electrónico" />
                 <TextInput
                     id="email"
                     v-model="form.email"

@@ -7,4 +7,9 @@
         @apply font-montserrat uppercase text-vxproject-primary font-bold text-sm rounded-full border border-vxproject-primary px-3
         hover:text-vxproject-secondary hover:border-vxproject-secondary;
     }
+
+    .vxproject-border {
+        @apply border-2 rounded-lg border-vxproject-primary-light border-opacity-50 shadow-lg
+        dark:bg-gray-800 dark:border-gray-700;
+    }
 }

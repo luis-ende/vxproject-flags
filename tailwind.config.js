@@ -16,6 +16,7 @@ module.exports = {
                 'primary': '#9900ff',
                 'vxproject-primary': '#9900ff',
                 'vxproject-secondary': '#ff00ff',
+                'vxproject-primary-light': '#cc99ff',
             },
             fontFamily: {
                 sans: ['Questrial', ...defaultTheme.fontFamily.sans],

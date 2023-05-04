@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import FieldLogo from "../../Components/FieldLogo.vue";
 
 defineProps({
     canResetPassword: Boolean,
@@ -30,11 +31,14 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="VX Project Field - Iniciar sesión" />
 
     <AuthenticationCard>
         <template #logo>
             <AuthenticationCardLogo />
+            <div class="w-48 h-16">
+                <FieldLogo />
+            </div>
         </template>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -77,7 +81,7 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <Link v-if="canResetPassword" :href="route('password.request')" class="md:basis-1/2 basis-1/3 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-vxproject-primary">
                     ¿Olvidaste tu contraseña?
                 </Link>
 
