@@ -8,10 +8,11 @@ use App\Models\VxFlagAttributes;
 use App\Services\GeoCalculatorService;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Row;
 
-class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow
+class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculatedFormulas
 {
     use GeoCalculatorService;
 
@@ -46,8 +47,8 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow
     public function onRow(Row $row): void
     {
         if ($this->flagGroupType === FlagGroupType::TiposSuelo) {
-            $rows = $row->toArray();
-            $longitud2 = $this->DMSStringtoDEC($row['longitud2']);
+            $rows = $row->toArray(null, true);
+            $longitud2 = $this->DMSStringtoDEC($row['longitud']);
             $latitud = $this->DMSStringtoDEC($row['latitud']);
             unset($rows['14']);
             unset($rows['15']);

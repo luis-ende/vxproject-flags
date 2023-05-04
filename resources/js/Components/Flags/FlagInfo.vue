@@ -27,7 +27,7 @@ const formatCoordinates = (text) => {
                 <div class="text-right border-b border-b-vxproject-secondary">Latitud:</div>
                 <div class="border-b border-b-vxproject-secondary pl-5">{{ formatCoordinates(flagInfo.latitud) }}</div>
                 <div class="text-right border-b border-b-vxproject-secondary">Longitud:</div>
-                <div class="border-b border-b-vxproject-secondary pl-5">{{ formatCoordinates(flagInfo.longitud2) }}</div>
+                <div class="border-b border-b-vxproject-secondary pl-5">{{ formatCoordinates(flagInfo.longitud) }}</div>
                 <div class="text-right border-b border-b-vxproject-secondary">Sismo:</div>
                 <div class="border-b border-b-vxproject-secondary pl-5">{{ flagInfo.sismo }}</div>
                 <div class="text-right border-b border-b-vxproject-secondary">Zona:</div>
@@ -61,6 +61,9 @@ const formatCoordinates = (text) => {
                     {{ parseFloat(flagInfo.altura).toFixed(2) }}<span class="lowercase">m</span>
                 </div>
             </div>
+        </div>
+        <span class="block mt-10 mb-5 border-b border-b-vxproject-secondary">Descripción suelo:</span>
+        <div class="h-10 overflow-y-auto" v-html="flagInfo.descripcion_suelo">
         </div>
         <span class="block mt-10 mb-5 border-b border-b-vxproject-secondary">Observaciones:</span>
         <div class="h-48 overflow-y-auto" v-html="flagInfo.observaciones">

@@ -41,7 +41,7 @@ const vxFlagInfoSuelo = reactive({
     d_terreno: null,
     df_min: null,
     latitud: null,
-    longitud2: null,
+    longitud: null,
     n: null,
     o_terreno: null,
     observaciones: null,
@@ -50,6 +50,7 @@ const vxFlagInfoSuelo = reactive({
     sitio: null,
     tipo_terreno: null,
     zona: null,
+    descripcion_suelo: null,
 });
 const vxFlagInfoTemperatura = reactive({
     temperatura: null,
@@ -207,7 +208,7 @@ const clearVxFlagInfoPanel = () => {
         <div class="py-6">
             <div class="max-w-full mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="flex flex-row h-[750px]">
+                    <div class="flex flex-row h-[850px]">
                         <div class="basis-2/3 p-5">
                             <FlagsMap
                                 :map="map"

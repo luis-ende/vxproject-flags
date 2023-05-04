@@ -23,10 +23,5 @@ class VxFlagSeeder extends Seeder
         $import = new VxFlagsImport(2, FlagGroupType::TemperaturasCFE);
 
         Excel::import($import, $path);
-
-        $path = base_path('database/data/imports/EMS01.xlsx');
-        $import = new VxFlagsImport(3, FlagGroupType::TiposSuelo);
-
-        Excel::import($import, $path);
     }
 }
