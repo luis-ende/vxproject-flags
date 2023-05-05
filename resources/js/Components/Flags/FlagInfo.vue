@@ -38,19 +38,21 @@ const formatCoordinates = (text) => {
             <div class="basis-1/2  grid grid-cols-3 grid-rows-6">
                 <div class="text-right border-b border-b-vxproject-secondary">Capacidad:</div>
                 <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
-                    {{ parseFloat(flagInfo.capacidad).toFixed(2) }} <span class="lowercase">t/m&#179;</span>
+                    {{ flagInfo.capacidad !== 'NA' ? parseFloat(flagInfo.capacidad).toFixed(2) : 'NA' }}
+                    <span v-show="flagInfo.capacidad !== 'NA'" class="lowercase">t/m&#179;</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary"><span class="lowercase">Ø</span> Terreno:</div>
                 <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
-                    {{ parseFloat(flagInfo.o_terreno).toFixed(2) }}°
+                    {{ flagInfo.o_terreno !== 'NA' ? parseFloat(flagInfo.o_terreno).toFixed(2) : 'NA' }}<span v-show="flagInfo.o_terreno !== 'NA'">°</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary"><span class="lowercase">δ</span> Terreno:</div>
                 <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
-                    {{ parseFloat(flagInfo.d_terreno).toFixed(2) }} <span class="lowercase">t/m&#179;</span>
+                    {{ flagInfo.d_terreno !== 'NA' ? parseFloat(flagInfo.d_terreno).toFixed(2) : 'NA' }}
+                    <span v-show="flagInfo.d_terreno !== 'NA'" class="lowercase">t/m&#179;</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary">DF Min:</div>
                 <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
-                    {{ parseFloat(flagInfo.df_min).toFixed(2).toString().padStart(5, '0') }}<span class="lowercase">m</span>
+                    {{ flagInfo.df_min !== 'NA' ? parseFloat(flagInfo.df_min).toFixed(2).toString().padStart(5, '0') : 'NA' }}<span v-show="flagInfo.df_min !== 'NA'" class="lowercase">m</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary">Proyecto:</div>
                 <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">

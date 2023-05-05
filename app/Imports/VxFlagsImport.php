@@ -48,8 +48,8 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
     {
         if ($this->flagGroupType === FlagGroupType::TiposSuelo) {
             $rows = $row->toArray(null, true);
-            $longitud2 = $this->DMSStringtoDEC($row['longitud']);
-            $latitud = $this->DMSStringtoDEC($row['latitud']);
+            $longitud = $this->DMSStringtoDEC($this->trimDmsFormat($row['longitud']));
+            $latitud = $this->DMSStringtoDEC($this->trimDmsFormat($row['latitud']));
             unset($rows['14']);
             unset($rows['15']);
             unset($rows['16']);
@@ -58,7 +58,7 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
             $jsonAttr = json_encode($rows);
             $vxFlag = VxFlag::create([
                 'id_flag_group' => $this->flagGroupId,
-                'longitude' => $longitud2,
+                'longitude' => $longitud,
                 'latitude' => $latitud,
                 'description' => $descripcion,
             ]);
@@ -67,5 +67,18 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
                 'attributes' => $jsonAttr,
             ]);
         }
+    }
+
+    private function trimDmsFormat(string $dms): string
+    {
+        $items = explode(' ', $dms);
+        array_walk($items, function (&$item) {
+            $item = ltrim($item, '0');
+            if ($item[0] === '.' || $item[0] === "'") {
+                $item = '0' . $item;
+            }
+        });
+
+        return implode(' ', $items);
     }
 }

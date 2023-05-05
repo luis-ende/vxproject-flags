@@ -23,6 +23,7 @@ onMounted(() => {
         noChoicesText: 'No hay más regiones para seleccionar.',
         classNames: {
             containerInner: 'regiones__choices__inner',
+            input: 'regiones__choices__input',
         }
     });
 
