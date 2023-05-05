@@ -11,6 +11,9 @@ const choicesData = [
     { value: 'R4', label: 'R4', selected: false},
     { value: 'R5', label: 'R5', selected: false},
     { value: 'R6', label: 'R6', selected: false},
+    { value: 'R7', label: 'R7', selected: false},
+    { value: 'R8', label: 'R8', selected: false},
+    { value: 'R9', label: 'R9', selected: false},
 ];
 
 onMounted(() => {
