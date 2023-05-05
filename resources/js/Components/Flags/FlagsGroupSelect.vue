@@ -15,7 +15,7 @@ defineProps({
 });
 
 const onGroupsSelected = (e) => {
-    if (parseInt(e.target.dataset.esTiposSuelo) === 1) {
+    if (parseInt(e.target.dataset.groupType) === 2) {
         tiposSueloSelected.value = e.target.checked;
     }
     emit('groupsChange', parseInt(e.target.dataset.group), e.target.checked);
@@ -36,7 +36,7 @@ const onRegionesChange = (regiones) => {
                    @change="onGroupsSelected($event)"
                    class="w-5 h-5 text-vxproject-secondary border-vxproject-secondary focus:ring-vxproject-primary rounded-full"
                    :data-group="group.id"
-                   :data-es-tipos-suelo="group.name.toLowerCase() === 'tipos de suelo' ? 1 : 0">
+                   :data-group-type="group.type">
             <label :for="'group_' + index" class="uppercase ml-3">{{ group.name }}</label>
         </li>
     </ul>
