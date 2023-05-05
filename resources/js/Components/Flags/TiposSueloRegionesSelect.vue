@@ -28,22 +28,32 @@ onMounted(() => {
 
     choices.setChoices(choicesData);
 
+    let updating = false;
     regionesSelect.addEventListener('change', event => {
-        const options = event.target.selectedOptions;
-        if (options.length === 0) {
-            choices.setChoiceByValue('R0');
-        } else {
-            choices.removeActiveItemsByValue('R0');
-        }
+        if (!updating) {
+            const options = event.target.selectedOptions;
+            if (options.length === 0) {
+                choices.setChoiceByValue('R0');
+            } else {
+                updating = true;
+                if (event.detail.value === 'R0') {
+                    choices.removeActiveItems(null);
+                    choices.setChoiceByValue('R0');
+                } else {
+                    choices.removeActiveItemsByValue('R0');
+                }
+                updating = false;
+            }
 
-        let regiones = [];
-        for (let i = 0; i < options.length; i++) {
-            regiones.push(options[i].value);
+            let regiones = [];
+            for (let i = 0; i < options.length; i++) {
+                regiones.push(options[i].value);
+            }
+            if (regiones.length === 0) {
+                regiones.push('R0');
+            }
+            emit('regionesChange', regiones)
         }
-        if (regiones.length === 0) {
-            regiones.push('R0');
-        }
-        emit('regionesChange', regiones)
     });
 });
 
