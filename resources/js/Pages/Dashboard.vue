@@ -87,7 +87,9 @@ const groupsChange = (groupId, checked) => {
         clearFlags(currentGroup);
     }
 
-    grupoTiposSueloActivo = currentGroup.type === 2 && checked;
+    if (currentGroup.type === 2) {
+        grupoTiposSueloActivo = checked;
+    }
 };
 
 const regionesChange = (regiones) => {
