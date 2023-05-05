@@ -18,6 +18,7 @@ const props = defineProps({
 let map = null;
 let markersGroup = [];
 let currentLocationMarker = null;
+let grupoTiposSueloActivo = false;
 let searchLocation = reactive({
     lat: 19.3886,
     lng: -99.16335,
@@ -79,11 +80,29 @@ const onMapDoubleClick = (e) => {
 }
 
 const groupsChange = (groupId, checked) => {
-    const currentGroup = props.flagsGroups.find(g => g.id === groupId );
+    const currentGroup = props.flagsGroups.find(g => g.id === groupId);
     if (checked) {
         loadFlags(currentGroup);
     } else {
         clearFlags(currentGroup);
+    }
+
+    grupoTiposSueloActivo = currentGroup.type === 2 && checked;
+};
+
+const regionesChange = (regiones) => {
+    if (grupoTiposSueloActivo) {
+        const grupoTiposSuelo = props.flagsGroups.find(g => g.type === 2);
+        const sinFiltro = regiones.includes('R0');
+        grupoTiposSuelo.flags.forEach(flag => {
+            if (sinFiltro) {
+                flag.visible = true;
+            } else {
+                flag.visible = regiones.includes(flag.region);
+            }
+        })
+        clearFlags(grupoTiposSuelo);
+        loadFlags(grupoTiposSuelo);
     }
 };
 
@@ -98,20 +117,22 @@ const loadFlags = (group) => {
 
     let layerMarkers = [];
     group.flags.forEach(flag => {
-        let desc = flag.description.replace(/(\r\n|\r|\n)/g, '<br>');
-        //@debug desc = desc + ' id: ' + flag.id;
-        let customIcon = L.divIcon({
-            ...defIcon,
-            html: `<div><svg fill="${group.color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M32 144a144 144 0 1 1 288 0A144 144 0 1 1 32 144zM176 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM144 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"></path></svg></div>`,
-        });
-        let marker = L.marker([flag.latitude, flag.longitude], {
-            icon: customIcon,
-            vxFlagId: flag.id
-        });
-        marker.on('click', onMarkerClick);
-        layerMarkers.push(marker);
-        marker.addTo(map);
-        marker.bindPopup(desc);
+        if (flag.visible) {
+            let desc = flag.description.replace(/(\r\n|\r|\n)/g, '<br>');
+            //@debug desc = desc + ' id: ' + flag.id;
+            let customIcon = L.divIcon({
+                ...defIcon,
+                html: `<div><svg fill="${group.color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M32 144a144 144 0 1 1 288 0A144 144 0 1 1 32 144zM176 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM144 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"></path></svg></div>`,
+            });
+            let marker = L.marker([flag.latitude, flag.longitude], {
+                icon: customIcon,
+                vxFlagId: flag.id
+            });
+            marker.on('click', onMarkerClick);
+            layerMarkers.push(marker);
+            marker.addTo(map);
+            marker.bindPopup(desc);
+        }
     });
 
     markersGroup.push({
@@ -215,17 +236,18 @@ const clearVxFlagInfoPanel = () => {
                             />
                         </div>
                         <div class="basis-1/3 pr-5">
-                            <div class="my-10">
+                            <div class="my-5">
                                 <LocationSearchInput
                                     v-model:lat="searchLocation.lat"
                                     v-model:lng="searchLocation.lng"
                                     @search="setSearchLocation"
                                 />
                             </div>
-                            <div class="my-10">
+                            <div class="my-5">
                                 <FlagsGroupSelect
                                     :groups="flagsGroups"
                                     @groups-change="groupsChange"
+                                    @regiones-change="regionesChange"
                                 />
                             </div>
                             <div v-show="currentVxFlagInfo.active">

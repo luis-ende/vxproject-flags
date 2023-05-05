@@ -1,0 +1,26 @@
+@import "choices.js/src/styles/choices.scss";
+
+.choices__list--multiple .choices__item {
+  background-color: white;
+  color: #9900ff;
+  border: 1px solid #9900ff;
+}
+
+.choices__list--multiple > .choices__item.is-highlighted {
+  background-color: #cc99ff;
+  color: white;
+  border: 1px solid #e6e6e6;
+}
+
+.regiones__choices__inner {
+  @extend .choices__inner;
+  width: 380px !important;
+  background-color: #ffffff;
+  padding: 5px 7.5px 1px 7.5px;
+}
+
+.choices__button {
+  color: #9900ff;
+  border-left: 1px solid #9900ff !important;
+  background-image: url("data:image/svg+xml,%3csvg width='21' height='21' viewBox='0 0 21 21' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='%239900ff' fill-rule='evenodd'%3e%3cpath d='M2.592.044l18.364 18.364-2.548 2.548L.044 2.592z'/%3e%3cpath d='M0 18.364L18.364 0l2.548 2.548L2.548 20.912z'/%3e%3c/g%3e%3c/svg%3e") !important;
+}
