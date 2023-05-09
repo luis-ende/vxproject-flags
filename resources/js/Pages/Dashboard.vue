@@ -12,6 +12,9 @@ const props = defineProps({
         type: Array,
         default: [],
     },
+    mapLayerUrl: {
+        type: String,
+    }
 });
 
 // @todo Consider: https://stackoverflow.com/questions/73542576/leaflet-error-when-zooming-after-closing-popup
@@ -25,9 +28,11 @@ let searchLocation = reactive({
     zoom: 6,
 });
 const violetIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
+    // conUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+    // shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconUrl: '/images/grommet-map.png',
+    // iconSize: [25, 41],
+    iconSize: [25, 25],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
@@ -63,9 +68,9 @@ onMounted(() => {
     map.on('dblclick', onMapDoubleClick)
     // @todo Get url from global app settings
     //L.tileLayer('https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=aoG5PxooEJs06nNutrZH', {
-    L.tileLayer('https://api.maptiler.com/maps/winter-v2/{z}/{x}/{y}.png?key=aoG5PxooEJs06nNutrZH', {
+    L.tileLayer(props.mapLayerUrl, {
         maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map)
 });
 

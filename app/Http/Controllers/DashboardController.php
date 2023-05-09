@@ -11,8 +11,9 @@ class DashboardController extends Controller
     public function show(VxFlagsRepository $flagsRepo): \Inertia\Response
     {
         $flagsGroups = $flagsRepo->getFlagsGroups();
+        $mapLayerUrl = env('MAP_TILER_API_ENDPOINT');
 
-        return Inertia::render('Dashboard', compact('flagsGroups'));
+        return Inertia::render('Dashboard', compact('flagsGroups', 'mapLayerUrl'));
     }
 
     public function getVxFlagInfo(int $vxFlagId, VxFlagsRepository $flagsRepo): \Illuminate\Http\JsonResponse
