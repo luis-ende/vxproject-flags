@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import FieldLogo from "../../Components/FieldLogo.vue";
 
 const form = useForm({
     name: '',
@@ -29,6 +30,9 @@ const submit = () => {
     <AuthenticationCard>
         <template #logo>
             <AuthenticationCardLogo />
+            <div class="w-48 h-16">
+                <FieldLogo />
+            </div>
         </template>
 
         <form @submit.prevent="submit">
