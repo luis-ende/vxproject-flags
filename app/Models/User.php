@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyNotification;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,14 +21,14 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    /*public bool $is_subscriber = true;
-    protected string $test123 = 'ABC';*/
-
-    public function getIsSubscriberAttribute()
+    public function getIsSubscriberAttribute(): bool
     {
-        $teamSubscribers = Team::where('name', 'Suscriptores')->first();
+        return $this->subscriber !== null;
+    }
 
-        return $this->belongsToTeam($teamSubscribers) && !$this->ownsTeam($teamSubscribers);
+    public function subscriber(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Subscriber::class, 'user_id', 'id');
     }
 
     public function sendPasswordResetNotification($token)

@@ -16,6 +16,7 @@ class TeamInvitation extends JetstreamTeamInvitation
     protected $fillable = [
         'email',
         'role',
+        'subscription_type_id',
     ];
 
     /**

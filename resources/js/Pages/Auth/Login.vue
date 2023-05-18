@@ -8,8 +8,9 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import FieldLogo from "../../Components/FieldLogo.vue";
+import {computed} from "vue";
 
-defineProps({
+const props = defineProps({
     canResetPassword: Boolean,
     status: String,
 });
@@ -28,6 +29,9 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+const userExpiredDeactivated = computed(() => props.status === 'user-expired-deactivated');
+
 </script>
 
 <template>
@@ -41,8 +45,9 @@ const submit = () => {
             </div>
         </template>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
+        <div v-if="userExpiredDeactivated"
+             class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+            <span class="font-bold">Aviso: </span>La cuenta del usuario ha expirado o se encuentra desactivada.
         </div>
 
         <form @submit.prevent="submit">

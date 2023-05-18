@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import {Head, Link, useForm, usePage} from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Checkbox.vue';
@@ -9,12 +9,15 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import FieldLogo from "../../Components/FieldLogo.vue";
 
+const page = usePage();
+
 const form = useForm({
     name: '',
-    email: '',
+    email: page.props.invitation_email,
     password: '',
     password_confirmation: '',
     terms: false,
+    id: (new URLSearchParams(window.location.search)).get('id'),
 });
 
 const submit = () => {
@@ -56,8 +59,10 @@ const submit = () => {
                     id="email"
                     v-model="form.email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full bg-neutral-200"
                     required
+                    disabled
+                    aria-disabled="true"
                     autocomplete="username"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -107,7 +112,7 @@ const submit = () => {
                     ¿Ya estás registrado?
                 </Link>
 
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing || !form.id }" :disabled="form.processing || !form.id">
                     Registrar
                 </PrimaryButton>
             </div>

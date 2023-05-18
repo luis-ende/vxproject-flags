@@ -21,7 +21,7 @@ class InviteTeamMember implements InvitesTeamMembers
     /**
      * Invite a new team member to the given team.
      */
-    public function invite(User $user, Team $team, string $email, string $role = null): void
+    public function invite(User $user, Team $team, string $email, string $role = null, int $subscriptionType = 1): void
     {
         Gate::forUser($user)->authorize('addTeamMember', $team);
 
@@ -32,6 +32,7 @@ class InviteTeamMember implements InvitesTeamMembers
         $invitation = $team->teamInvitations()->create([
             'email' => $email,
             'role' => $role,
+            'subscription_type_id' => $subscriptionType,
         ]);
 
         Mail::to($email)->send(new TeamInvitation($invitation));

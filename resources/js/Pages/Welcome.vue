@@ -6,8 +6,7 @@ import FieldLogo from "../Components/FieldLogo.vue";
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
-    laravelVersion: String,
-    phpVersion: String,
+    status: String,
 });
 </script>
 

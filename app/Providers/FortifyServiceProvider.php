@@ -6,11 +6,15 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 use Laravel\Fortify\Fortify;
+use Laravel\Jetstream\Jetstream;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -31,6 +35,18 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+
+        Fortify::registerView(function (Request $request) {
+            $email = '';
+            if ($request->has('id')) {
+                $model = Jetstream::teamInvitationModel();
+
+                $invitation = $model::whereKey($request->input('id'))->firstOrFail();
+                $email = $invitation->email;
+            }
+
+            return Inertia::render('Auth/Register', ['invitation_email' => $email]);
+        });
 
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
