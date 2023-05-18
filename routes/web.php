@@ -48,7 +48,8 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
     Route::get('/config-panel', [\App\Http\Controllers\AdminPanelController::class, 'show'])->name('config-panel.show');
-    Route::get('/vx-flags/info/{flagId}', [\App\Http\Controllers\DashboardController::class, 'getVxFlagInfo'])->name('vx-flags.info');
+    Route::get('/vx-flags/info/{flagId}', [\App\Http\Controllers\FlagsController::class, 'getVxFlagInfo'])->name('vx-flags.info');
+    Route::get('/vx-flags/{groupId}', [\App\Http\Controllers\FlagsController::class, 'getFlagsByGroup'])->name('vx-flags.list');
 });
 
 

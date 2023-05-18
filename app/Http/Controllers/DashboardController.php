@@ -15,11 +15,4 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard', compact('flagsGroups', 'mapLayerUrl'));
     }
-
-    public function getVxFlagInfo(int $vxFlagId, VxFlagsRepository $flagsRepo): \Illuminate\Http\JsonResponse
-    {
-        return response()->json([
-            'attributes' => $flagsRepo->getVxFlagAttributes($vxFlagId),
-        ]);
-    }
 }

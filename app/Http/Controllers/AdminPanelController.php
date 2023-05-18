@@ -10,7 +10,7 @@ class AdminPanelController extends Controller
 {
     public function show(VxFlagsRepository $flagsRepo)
     {
-        $flagsGroups = $flagsRepo->getFlagsGroups();
+        $flagsGroups = $flagsRepo->getFlagsGroups(false);
 
         return Inertia::render('ConfigPanel', compact('flagsGroups'));
     }

@@ -1,6 +1,14 @@
 <script setup>
 import AppLayout from "../Layouts/AppLayout.vue";
 import {onMounted, reactive, ref} from "vue";
+import PrimaryButton from "../Components/PrimaryButton.vue";
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net';
+
+DataTable.use(DataTablesCore);
+
+let dt;
+const table = ref();
 
 const props = defineProps({
     flagsGroups: {
@@ -9,8 +17,11 @@ const props = defineProps({
     },
 });
 
+const vxFlags = reactive([] );
 const selectedGroup = ref(1);
 let currentGroup = reactive(props.flagsGroups[0]);
+const isLoading = ref(false);
+const loadError = ref('');
 
 const groupClasses = (groupId, index) => {
     const rounded = index === 0 ? 'rounded-t-lg' : '';
@@ -22,10 +33,37 @@ const groupClasses = (groupId, index) => {
 const setCurrentGroup = (groupId) => {
     selectedGroup.value = groupId;
     currentGroup = reactive(props.flagsGroups.find(g => g.id === groupId));
+    loadGroupFlags(groupId);
+};
+
+const loadGroupFlags = (groupId) => {
+    isLoading.value = true;
+    loadError.value = '';
+    fetch('/vx-flags/' + groupId).then(res => {
+        isLoading.value = false;
+        if (res.ok) {
+            return res.json();
+        } else {
+            loadError.value = res.statusText;
+        }
+    })
+    .then(json => {
+        if (json && json.flags) {
+            vxFlags.length = 0;
+            json.flags.forEach(f => {
+                vxFlags.push([
+                    f.description,
+                    f.latitude,
+                    f.longitude,
+                ]);
+            });
+            isLoading.value = false;
+        }
+    })
 };
 
 onMounted(() => {
-    setCurrentGroup(1);
+    setCurrentGroup(props.flagsGroups[0].id);
 });
 
 </script>
@@ -44,16 +82,14 @@ onMounted(() => {
                     <div class="flex flex-row flex-wrap px-5 py-5">
                         <div class="basis-full md:basis-1/3 md:px-10">
                             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Grupos de sitios</h2>
-                            <div class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <div class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                 :class="{ 'opacity-25': isLoading }">
                                 <button type="button"
+                                        :disabled="isLoading"
                                         v-for="(group, index) in flagsGroups"
                                         @click="setCurrentGroup(group.id)"
                                         :class="groupClasses(group.id, index)">
                                     {{ group.name }}
-                                </button>
-                                <button
-                                   class="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-700 focus:text-violet-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white text-left">
-                                    + Agregar nuevo
                                 </button>
                             </div>
                         </div>
@@ -66,73 +102,58 @@ onMounted(() => {
                                             <div class="sm:col-span-2">
                                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
                                                 <input type="text"
-                                                       name="name"
                                                        id="name"
-                                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                       class="bg-neutral-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-vxproject-secondary focus:border-vxproject-secondary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                        v-model="currentGroup.name"
                                                        placeholder="Nombre del grupo"
-                                                       required="">
+                                                       disabled>
                                             </div>
                                             <div class="w-full">
                                                 <label for="color" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Color</label>
                                                 <input type="color"
                                                        name="color"
                                                        id="color"
-                                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-vxproject-secondary focus:border-vxproject-secondary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                        v-model="currentGroup.color"
                                                        placeholder="Product brand"
                                                        required="">
                                             </div>
                                         </div>
                                         <div class="flex items-center space-x-4">
-                                            <button type="button" class="text-white bg-violet-700 hover:bg-violet-800 focus:ring-4 focus:outline-none focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-violet-800">
-                                                Actualizar
-                                            </button>
-                                            <button type="button"
-                                                    title="Importar sitios a este grupo"
-                                                    class="text-white bg-violet-700 hover:bg-violet-800 focus:ring-4 focus:outline-none focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-violet-800">
+                                            <PrimaryButton>
+                                                Guardar
+                                            </PrimaryButton>
+                                            <PrimaryButton>
                                                 Importar
-                                            </button>
-                                            <button type="button" class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                                <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                                Borrar
-                                            </button>
+                                            </PrimaryButton>
                                         </div>
                                     </form>
                                 </div>
                             </section>
                             <section>
                                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Sitios del grupo</h2>
-                                <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
-                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <tr>
-                                            <th scope="col" class="px-6 py-3">
-                                                Descripcion
-                                            </th>
-                                            <th scope="col" class="px-6 py-3">
-                                                Latitud
-                                            </th>
-                                            <th scope="col" class="px-6 py-3">
-                                                Longitud
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="flag in currentGroup.flags"
-                                                class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                                <th scope="row" class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                    {{ flag.description }}
+                                <div v-show="isLoading" class="text-stone-500">Cargando sitios del grupo...</div>
+                                <div v-show="loadError" class="text-sm my-5 text-red-600">Ocurrió un error al cargar datos: {{ loadError }}</div>
+                                <div v-show="!isLoading" class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
+                                    <DataTable
+                                            class="display"
+                                            :options="{ language: { url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'} }"
+                                            :data="vxFlags"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Descripción
                                                 </th>
-                                                <td class="py-2 px-6">
-                                                    {{ flag.latitude }}
-                                                </td>
-                                                <td class="py-2 px-6 text-right">
-                                                    {{ flag.longitude }}
-                                                </td>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Latitud
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Longitud
+                                                </th>
                                             </tr>
-                                        </tbody>
-                                    </table>
+                                        </thead>
+                                    </DataTable>
                                 </div>
                             </section>
                         </div>
