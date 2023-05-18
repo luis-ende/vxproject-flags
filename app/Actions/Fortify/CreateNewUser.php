@@ -48,7 +48,6 @@ class CreateNewUser implements CreatesNewUsers
             Subscriber::create([
                 'user_id' => $user->id,
                 'subscription_type_id' => $invitation->subscription_type_id,
-                // TODO Implementar función para calcular fecha de expiración
                 'expiration_date' =>
                     Subscriber::calculateExpirationDate($invitation->subscription_type_id, today()),
             ]);
@@ -59,6 +58,8 @@ class CreateNewUser implements CreatesNewUsers
         });
 
         $this->acceptInvitation($invitation);
+
+        session()->flash('flash.banner', 'Registro completado. !Ya puedes comenzar a usar VX Project Field!');
 
         return $user;
     }
