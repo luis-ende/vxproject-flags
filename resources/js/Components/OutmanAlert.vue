@@ -8,7 +8,6 @@ const props = defineProps({
 const alerting = ref(false);
 
 onMounted(() => {
-    console.log('listening...')
     window.Echo.channel(`outman.user.${props.id}`)
         .listen('UserAuthenticatedEvent', () => {
             alerting.value = true
