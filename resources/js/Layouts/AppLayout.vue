@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import OutmanAlert from "../Components/OutmanAlert.vue";
 
 defineProps({
     title: String,
@@ -33,6 +34,10 @@ const logout = () => {
         <Head :title="title" />
 
         <Banner />
+
+        <div v-if="$page.props.auth.user">
+            <OutmanAlert :id="$page.props.auth.user.id" />
+        </div>
 
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white border-b border-gray-100">

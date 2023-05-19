@@ -21,6 +21,8 @@
     "dependencies": {
         "choices.js": "^10.2.0",
         "datatables.net-vue3": "^2.1.0",
+        "laravel-echo": "^1.15.1",
+        "pusher-js": "^8.0.2",
         "sass": "^1.62.1"
     }
 }
