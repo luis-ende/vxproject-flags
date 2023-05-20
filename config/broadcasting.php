@@ -41,7 +41,7 @@ return [
                 'scheme' => env('PUSHER_SCHEME', 'https'),
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'encrypted' => true,
-                'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
+                //'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
                 'curl_options' => [
                     CURLOPT_SSL_VERIFYHOST => 0,
                     CURLOPT_SSL_VERIFYPEER => 0,

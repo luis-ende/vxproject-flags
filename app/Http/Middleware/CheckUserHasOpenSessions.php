@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserHasOpenSessions
@@ -24,18 +25,13 @@ class CheckUserHasOpenSessions
                                 ->where([
                                     ['user_id', $request->user()->id],
                                     ['id', '<>', $request->session()->getId()],
-                                ])->count();
-            if ($sessions > 0) {
-                DB::table('sessions')
-                    ->where([
-                        ['user_id', $request->user()->id],
-                        ['id', '<>', $request->session()->getId()],
-                    ])
-                    ->update([
-                        'id' => DB::raw("concat('OUTMAN_', user_id,'_', id)"),
-                        'user_id' => null,
-                    ]);
+                                ])->get();
 
+            foreach ($sessions as $session) {
+                Session::getHandler()->destroy($session->id);
+            }
+
+            if ($sessions->count() > 0) {
                 broadcast(new UserAuthenticatedEvent($request->user()->id));
             }
         }

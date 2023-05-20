@@ -32,6 +32,8 @@ return [
             'enable_client_messages' => true,
             'enable_statistics' => true,
             'encrypted' => true,
+            'scheme' => env('PUSHER_SCHEME'),
+            'host' => env('PUSHER_HOST')
         ],
     ],
 
