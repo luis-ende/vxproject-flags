@@ -21,19 +21,31 @@ class CheckUserHasOpenSessions
     {
         if ($request->user() &&
             $request->user()->getIsSubscriberAttribute()) {
-            $sessions = DB::table('sessions')
-                                ->where([
-                                    ['user_id', $request->user()->id],
-                                    ['id', '<>', $request->session()->getId()],
-                                ])->get();
-
-            foreach ($sessions as $session) {
-                Session::getHandler()->destroy($session->id);
+            $previous_session = $request->user()->session_id;
+            if ($previous_session) {
+                Session::getHandler()->destroy($previous_session);
             }
 
-            if ($sessions->count() > 0) {
-                broadcast(new UserAuthenticatedEvent($request->user()->id));
+            $request->user()->session_id = Session::getId();
+            $request->user()->save();
+
+            if ($previous_session) {
+                broadcast(new UserAuthenticatedEvent($request->user()->id))->toOthers();
             }
+
+//            $sessions = DB::table('sessions')
+//                                ->where([
+//                                    ['user_id', $request->user()->id],
+//                                    ['id', '<>', $request->session()->getId()],
+//                                ])->get();
+//
+//            foreach ($sessions as $session) {
+//                Session::getHandler()->destroy($session->id);
+//            }
+//
+//            if ($sessions->count() > 0) {
+//                broadcast(new UserAuthenticatedEvent($request->user()->id));
+//            }
         }
 
         return $next($request);
