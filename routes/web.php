@@ -44,7 +44,6 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
     'active',
-    'auth.session.restricted'
 ])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
     Route::get('/config-panel', [\App\Http\Controllers\AdminPanelController::class, 'show'])->name('config-panel.show');
