@@ -9,16 +9,19 @@ class SetUserUniqueSession
 {
     public function handle($request, $next)
     {
-        $previous_session = $request->user()->session_id;
-        if ($previous_session) {
-            Session::getHandler()->destroy($previous_session);
-        }
+        if ($request->user() &&
+            $request->user()->getIsSubscriberAttribute()) {
+            $previous_session = $request->user()->session_id;
+            if ($previous_session) {
+                Session::getHandler()->destroy($previous_session);
+            }
 
-        $request->user()->session_id = Session::getId();
-        $request->user()->save();
+            $request->user()->session_id = Session::getId();
+            $request->user()->save();
 
-        if ($previous_session) {
-            broadcast(new UserAuthenticatedEvent($request->user()->id));
+            if ($previous_session) {
+                broadcast(new UserAuthenticatedEvent($request->user()->id));
+            }
         }
 
         return $next($request);
