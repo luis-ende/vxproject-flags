@@ -86,6 +86,21 @@ class TeamMemberController extends InertiaTeamMemberController
      */
     public function destroy(Request $request, $teamId, $userId)
     {
+        $team = Jetstream::newTeamModel()->findOrFail($teamId);
+
+        app(RemovesTeamMembers::class)->remove(
+            $request->user(),
+            $team,
+            $user = Jetstream::findUserByIdOrFail($userId)
+        );
+
+        $user->delete();
+
+        return back(303);
+    }
+
+    public function updateStatus(Request $request, $teamId, $userId)
+    {
         $user = Jetstream::findUserByIdOrFail($userId);
         $user->active = !($user->active === true);
         $user->save();
