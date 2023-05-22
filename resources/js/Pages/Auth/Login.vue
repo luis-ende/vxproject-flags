@@ -78,12 +78,12 @@ const userExpiredDeactivated = computed(() => props.status === 'user-expired-dea
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ml-2 text-sm text-gray-600">Mantener sesión abierta</span>
-                </label>
-            </div>
+<!--            <div class="block mt-4">-->
+<!--                <label class="flex items-center">-->
+<!--                    <Checkbox v-model:checked="form.remember" name="remember" />-->
+<!--                    <span class="ml-2 text-sm text-gray-600">Mantener sesión abierta</span>-->
+<!--                </label>-->
+<!--            </div>-->
 
             <div class="flex items-center justify-end mt-4">
                 <Link v-if="canResetPassword" :href="route('password.request')" class="md:basis-1/2 basis-1/3 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-vxproject-primary">
