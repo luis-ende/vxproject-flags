@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\FlagGroup;
+use App\Models\VxFlag;
 use App\Repositories\VxFlagsRepository;
-use http\Env\Response;
 use Illuminate\Http\Request;
 
 class FlagsController extends Controller
@@ -25,6 +25,13 @@ class FlagsController extends Controller
         return response()->json([
             'attributes' => $flagsRepo->getVxFlagAttributes($vxFlagId),
         ]);
+    }
+
+    public function destroy(int $vxFlagId)
+    {
+        VxFlag::where('id', $vxFlagId)->delete();
+
+        return back(303);
     }
 
     public function groupUpdate(Request $request, int $groupId)

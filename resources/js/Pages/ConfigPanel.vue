@@ -1,15 +1,47 @@
 <script setup>
 import AppLayout from "../Layouts/AppLayout.vue";
 import {onMounted, reactive, ref} from "vue";
-import PrimaryButton from "../Components/PrimaryButton.vue";
+import {useForm} from "@inertiajs/vue3";
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
-import {useForm} from "@inertiajs/vue3";
+import 'datatables.net-select';
+import 'datatables.net-buttons';
+import 'datatables.net-responsive';
+import ConfirmationModal from "../Components/ConfirmationModal.vue";
+import SecondaryButton from "../Components/SecondaryButton.vue";
+import DangerButton from "../Components/DangerButton.vue";
 
 DataTable.use(DataTablesCore);
 
 let dt;
-const table = ref();
+
+const tableColumns = [
+    {
+        data: 1,
+    },
+    {
+        data: 2,
+    },
+    {
+        data: 3,
+    },
+    {
+        data: null,
+        className: "dt-center editor-delete",
+        defaultContent: '<svg style="cursor: pointer" title="Eliminar renglón" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path><title>Eliminar</title></svg>',
+        orderable: false
+    }
+];
+
+const flagsDataTableOptions = {
+    language: { url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'},
+    responsive: true,
+    select: {
+        style: 'single',
+        toggleable: false,
+    },
+};
+const flagsDatatable = ref();
 
 const props = defineProps({
     flagsGroups: {
@@ -23,6 +55,9 @@ const selectedGroup = ref(1);
 let currentGroup = reactive(props.flagsGroups[0]);
 const isLoading = ref(false);
 const loadError = ref('');
+const rowBeingRemoved = ref(false);
+
+const deleteFlagForm = useForm({});
 
 const updateGroupForm = useForm({
     color: null,
@@ -64,6 +99,7 @@ const loadGroupFlags = (groupId) => {
             vxFlags.length = 0;
             json.flags.forEach(f => {
                 vxFlags.push([
+                    f.id,
                     f.description,
                     f.latitude,
                     f.longitude,
@@ -74,7 +110,29 @@ const loadGroupFlags = (groupId) => {
     })
 };
 
+const deleteFlag = () => {
+    const selected = dt.rows({ selected: true });
+    if (selected[0].length >= 1) {
+        const index = selected[0][0];
+        const vxFlagId = vxFlags[index][0];
+        deleteFlagForm.delete(route('vx-flags.destroy', vxFlagId), {
+            preserveScroll: true,
+            onSuccess: () => vxFlags.splice(index, 1),
+            //onError: () => ,
+            onFinish: () => {
+                rowBeingRemoved.value = false;
+                deleteFlagForm.reset()
+            },
+        });
+    }
+};
+
 onMounted(() => {
+    dt = flagsDatatable.value.dt;
+    dt.on('click', 'td.editor-delete', function (e) {
+        e.preventDefault();
+        rowBeingRemoved.value = true;
+    });
     setCurrentGroup(props.flagsGroups[0].id);
 });
 
@@ -108,7 +166,7 @@ onMounted(() => {
                         <div v-if="currentGroup" class="basis-full md:basis-2/3 flex flex-col">
                             <section class="bg-white dark:bg-gray-900">
                                 <div class="w-fit pt-8 md:pt-0">
-                                    <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Editar grupo</h2>
+                                    <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Información del grupo</h2>
                                     <form action="#">
                                         <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                                             <div class="sm:col-span-2">
@@ -133,19 +191,21 @@ onMounted(() => {
                                 </div>
                             </section>
 
-                            <section class="my-5 text-sm text-stone-700">
-                                <p>Ultima importación de datos: 12May2023 22:33:11 </p>
-                                <p>Archivo de importación de datos: /etc/filerun/abc.xlsx</p>
-                            </section>
+<!--                            <section class="my-5 text-sm text-stone-700">-->
+<!--                                <p>Ultima importación de datos: 12May2023 22:33:11 </p>-->
+<!--                                <p>Archivo de importación de datos: /etc/filerun/abc.xlsx</p>-->
+<!--                            </section>-->
 
                             <section>
                                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Sitios del grupo</h2>
                                 <div v-show="isLoading" class="text-stone-500">Cargando sitios del grupo...</div>
                                 <div v-show="loadError" class="text-sm my-5 text-red-600">Ocurrió un error al cargar datos: {{ loadError }}</div>
-                                <div v-show="!isLoading" class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
+                                <div v-show="!isLoading" class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg p-2">
                                     <DataTable
-                                            class="display"
-                                            :options="{ language: { url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json'} }"
+                                            ref="flagsDatatable"
+                                            class="display compact row-borders hover w-full"
+                                            :columns="tableColumns"
+                                            :options="flagsDataTableOptions"
                                             :data="vxFlags"
                                     >
                                         <thead>
@@ -159,6 +219,8 @@ onMounted(() => {
                                                 <th scope="col" class="px-6 py-3">
                                                     Longitud
                                                 </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                </th>
                                             </tr>
                                         </thead>
                                     </DataTable>
@@ -168,6 +230,31 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
+
+            <ConfirmationModal :show="rowBeingRemoved" @close="rowBeingRemoved = null">
+                <template #title>
+                    Sitios del grupo {{ currentGroup.name }}
+                </template>
+
+                <template #content>
+                    ¿Deseas eliminar el sitio seleccionado?
+                </template>
+
+                <template #footer>
+                    <SecondaryButton @click="rowBeingRemoved = null">
+                        Cancelar
+                    </SecondaryButton>
+
+                    <DangerButton
+                            class="ml-3"
+                            :class="{ 'opacity-25': deleteFlagForm.processing }"
+                            :disabled="deleteFlagForm.processing"
+                            @click="deleteFlag"
+                    >
+                        Eliminar
+                    </DangerButton>
+                </template>
+            </ConfirmationModal>
         </div>
     </AppLayout>
 </template>

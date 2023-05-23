@@ -34,3 +34,19 @@
   border-left: 1px solid #ff00ff !important;
   background-image: url("data:image/svg+xml,%3csvg width='21' height='21' viewBox='0 0 21 21' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='%23ff00ff' fill-rule='evenodd'%3e%3cpath d='M2.592.044l18.364 18.364-2.548 2.548L.044 2.592z'/%3e%3cpath d='M0 18.364L18.364 0l2.548 2.548L2.548 20.912z'/%3e%3c/g%3e%3c/svg%3e") !important;
 }
+
+/* Estilos Datatable */
+
+:root {
+  --dt-row-selected: 53, 0, 153;
+  --dt-row-selected-text: 255, 255, 255;
+  --dt-row-selected-link: 9, 10, 11;
+}
+
+.dataTables_wrapper .dataTables_length select {
+  width: 70px;
+}
+
+.dt-button {
+  margin-left: 30px !important;
+}

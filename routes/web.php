@@ -48,6 +48,7 @@ Route::middleware([
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
     Route::get('/config-panel', [\App\Http\Controllers\AdminPanelController::class, 'show'])->name('config-panel.show');
     Route::get('/vx-flags/info/{flagId}', [\App\Http\Controllers\FlagsController::class, 'getVxFlagInfo'])->name('vx-flags.info');
+    Route::delete('/vx-flags/{flagId}', [\App\Http\Controllers\FlagsController::class, 'destroy'])->name('vx-flags.destroy');
     Route::put('/vx-flags/group/{groupId}', [\App\Http\Controllers\FlagsController::class, 'groupUpdate'])->name('vx-flags.group.update');
     Route::get('/vx-flags/group/{groupId}', [\App\Http\Controllers\FlagsController::class, 'getFlagsByGroup'])->name('vx-flags.group.list');
 });
