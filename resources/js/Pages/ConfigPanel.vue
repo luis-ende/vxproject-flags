@@ -5,7 +5,6 @@ import {useForm} from "@inertiajs/vue3";
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
 import 'datatables.net-select';
-import 'datatables.net-buttons';
 import 'datatables.net-responsive';
 import ConfirmationModal from "../Components/ConfirmationModal.vue";
 import SecondaryButton from "../Components/SecondaryButton.vue";
