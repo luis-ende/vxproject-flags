@@ -4,6 +4,7 @@ import {onMounted, reactive, ref} from "vue";
 import PrimaryButton from "../Components/PrimaryButton.vue";
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
+import {useForm} from "@inertiajs/vue3";
 
 DataTable.use(DataTablesCore);
 
@@ -23,6 +24,16 @@ let currentGroup = reactive(props.flagsGroups[0]);
 const isLoading = ref(false);
 const loadError = ref('');
 
+const updateGroupForm = useForm({
+    color: null,
+});
+
+const updateGroup = () => {
+    updateGroupForm.put(route('vx-flags.group.update', [currentGroup])).then(res => {
+
+    });
+};
+
 const groupClasses = (groupId, index) => {
     const rounded = index === 0 ? 'rounded-t-lg' : '';
     return selectedGroup.value === groupId
@@ -33,13 +44,14 @@ const groupClasses = (groupId, index) => {
 const setCurrentGroup = (groupId) => {
     selectedGroup.value = groupId;
     currentGroup = reactive(props.flagsGroups.find(g => g.id === groupId));
+    updateGroupForm.color = currentGroup.color;
     loadGroupFlags(groupId);
 };
 
 const loadGroupFlags = (groupId) => {
     isLoading.value = true;
     loadError.value = '';
-    fetch('/vx-flags/' + groupId).then(res => {
+    fetch(route('vx-flags.group.list', [groupId])).then(res => {
         isLoading.value = false;
         if (res.ok) {
             return res.json();
@@ -95,7 +107,7 @@ onMounted(() => {
                         </div>
                         <div v-if="currentGroup" class="basis-full md:basis-2/3 flex flex-col">
                             <section class="bg-white dark:bg-gray-900">
-                                <div class="w-fit py-8 md:pt-0 md:pb-8">
+                                <div class="w-fit pt-8 md:pt-0">
                                     <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Editar grupo</h2>
                                     <form action="#">
                                         <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
@@ -113,23 +125,19 @@ onMounted(() => {
                                                 <input type="color"
                                                        name="color"
                                                        id="color"
-                                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-vxproject-secondary focus:border-vxproject-secondary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                       v-model="currentGroup.color"
-                                                       placeholder="Product brand"
-                                                       required="">
+                                                       @change="updateGroup"
+                                                       v-model="updateGroupForm.color">
                                             </div>
-                                        </div>
-                                        <div class="flex items-center space-x-4">
-                                            <PrimaryButton>
-                                                Guardar
-                                            </PrimaryButton>
-                                            <PrimaryButton>
-                                                Importar
-                                            </PrimaryButton>
                                         </div>
                                     </form>
                                 </div>
                             </section>
+
+                            <section class="my-5 text-sm text-stone-700">
+                                <p>Ultima importación de datos: 12May2023 22:33:11 </p>
+                                <p>Archivo de importación de datos: /etc/filerun/abc.xlsx</p>
+                            </section>
+
                             <section>
                                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Sitios del grupo</h2>
                                 <div v-show="isLoading" class="text-stone-500">Cargando sitios del grupo...</div>
