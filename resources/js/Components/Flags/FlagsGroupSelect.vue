@@ -29,7 +29,7 @@ const onRegionesChange = (regiones) => {
 
 <template>
     <ul>
-        <li v-for="(group, index) in groups" class="my-3 flex flex-row pl-14">
+        <li v-for="(group, index) in groups" class="my-3 flex flex-row md:pl-14">
             <input type="checkbox"
                    :id="'group_' + index"
                    name="groups"
@@ -40,7 +40,7 @@ const onRegionesChange = (regiones) => {
             <label :for="'group_' + index" class="uppercase ml-3">{{ group.name }}</label>
         </li>
     </ul>
-    <div v-show="tiposSueloSelected" class="pl-24 block">
+    <div v-show="tiposSueloSelected" class="md:pl-24 block">
         <TiposSueloRegionesSelect
                 @regiones-change="onRegionesChange"/>
     </div>

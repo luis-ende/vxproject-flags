@@ -19,9 +19,9 @@ const formatCoordinates = (text) => {
 
 <template>
     <div class="uppercase text-sm">
-        <span class="block my-7 text-lg font-bold">Sitio existente</span>
-        <div class="flex flex-row space-x-10">
-            <div class="basis-1/2 grid grid-cols-2 grid-rows-6">
+        <span class="block my-7 text-base md:text-lg font-bold">Sitio existente</span>
+        <div class="flex flex-col md:flex-row md:space-x-10">
+            <div class="md:basis-1/2 grid grid-cols-2 grid-rows-6">
                 <div class="text-right border-b border-b-vxproject-secondary">Sitio:</div>
                 <div class="border-b border-b-vxproject-secondary pl-5">{{ flagInfo.sitio }}</div>
                 <div class="text-right border-b border-b-vxproject-secondary">Latitud:</div>
@@ -35,37 +35,37 @@ const formatCoordinates = (text) => {
                 <div class="text-right border-b border-b-vxproject-secondary">Tipo terreno:</div>
                 <div class="border-b border-b-vxproject-secondary pl-5">{{ flagInfo.tipo_terreno }}</div>
             </div>
-            <div class="basis-1/2  grid grid-cols-3 grid-rows-6">
+            <div class="md:basis-1/2 grid grid-cols-2 md:grid-cols-3 grid-rows-6">
                 <div class="text-right border-b border-b-vxproject-secondary">Capacidad:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
                     {{ flagInfo.capacidad !== 'NA' ? parseFloat(flagInfo.capacidad).toFixed(2) : 'NA' }}
                     <span v-show="flagInfo.capacidad !== 'NA'" class="lowercase">t/m&#179;</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary"><span class="lowercase">Ø</span> Terreno:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
                     {{ flagInfo.o_terreno !== 'NA' ? parseFloat(flagInfo.o_terreno).toFixed(2) : 'NA' }}<span v-show="flagInfo.o_terreno !== 'NA'">°</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary"><span class="lowercase">δ</span> Terreno:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
                     {{ flagInfo.d_terreno !== 'NA' ? parseFloat(flagInfo.d_terreno).toFixed(2) : 'NA' }}
                     <span v-show="flagInfo.d_terreno !== 'NA'" class="lowercase">t/m&#179;</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary">DF Min:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
                     {{ flagInfo.df_min !== 'NA' ? parseFloat(flagInfo.df_min).toFixed(2).toString().padStart(5, '0') : 'NA' }}<span v-show="flagInfo.df_min !== 'NA'" class="lowercase">m</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary">Proyecto:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
                     {{ flagInfo.proyecto }}
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary">Altura:</div>
-                <div class="col-span-2 border-b border-b-vxproject-secondary pl-5">
+                <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
                     {{ parseFloat(flagInfo.altura).toFixed(2) }}<span class="lowercase">m</span>
                 </div>
             </div>
         </div>
         <span class="block mt-10 mb-5 border-b border-b-vxproject-secondary">Descripción suelo:</span>
-        <div class="h-10 overflow-y-auto" v-html="flagInfo.descripcion_suelo">
+        <div class="h-20 overflow-y-auto" v-html="flagInfo.descripcion_suelo">
         </div>
         <span class="block mt-10 mb-5 border-b border-b-vxproject-secondary">Observaciones:</span>
         <div class="h-48 overflow-y-auto" v-html="flagInfo.observaciones">

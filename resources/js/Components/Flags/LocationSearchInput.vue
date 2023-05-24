@@ -152,50 +152,54 @@ const decToDms = (latData, lngData) => {
                 <label class="ml-2" for="dewey">Decimales</label>
             </div>
         </fieldset>
-        <div class="flex flex-row space-x-4">
-            <div v-if="sistemaC === 'grados'" class="flex flex-row space-x-2">
-                <input type="text"
-                       name="lat_g"
-                       v-model="latData.deg"
-                       @input="validateNumericInput($event.target)"
-                       @blur="validateCNumericInput($event.target)"
-                       class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
-                <input type="text"
-                       name="lat_m"
-                       v-model="latData.min"
-                       @input="validateNumericInput($event.target)"
-                       @blur="validateCNumericInput($event.target)"
-                       class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
-                <input type="text"
-                       name="lat_s"
-                       v-model="latData.sec"
-                       @input="validateNumericInput($event.target)"
-                       @blur="validateCNumericInput($event.target)"
-                       class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
+        <div class="flex flex-row md:space-x-4 flex-wrap">
+            <div v-if="sistemaC === 'grados'" class="flex flex-row flex-wrap md:space-x-2">
+                <div class="mb-4 md:mb-0 space-x-2">
+                    <input type="text"
+                           name="lat_g"
+                           v-model="latData.deg"
+                           @input="validateNumericInput($event.target)"
+                           @blur="validateCNumericInput($event.target)"
+                           class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
+                    <input type="text"
+                           name="lat_m"
+                           v-model="latData.min"
+                           @input="validateNumericInput($event.target)"
+                           @blur="validateCNumericInput($event.target)"
+                           class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
+                    <input type="text"
+                           name="lat_s"
+                           v-model="latData.sec"
+                           @input="validateNumericInput($event.target)"
+                           @blur="validateCNumericInput($event.target)"
+                           class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
+                </div>
                 <span class="font-bold self-end">,</span>
-                <input type="text"
-                       name="lng_g"
-                       v-model="lngData.deg"
-                       @input="validateNumericInput($event.target)"
-                       @blur="validateCNumericInput($event.target)"
-                       class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
-                <input type="text"
-                       name="lng_m"
-                       v-model="lngData.min"
-                       @input="validateNumericInput($event.target)"
-                       @blur="validateCNumericInput($event.target)"
-                       class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
-                <input type="text"
-                       name="lng_s"
-                       v-model="lngData.sec"
-                       @input="validateNumericInput($event.target)"
-                       @blur="validateCNumericInput($event.target)"
-                       class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
+                <div class="mb-4 md:mb-0 space-x-2">
+                    <input type="text"
+                           name="lng_g"
+                           v-model="lngData.deg"
+                           @input="validateNumericInput($event.target)"
+                           @blur="validateCNumericInput($event.target)"
+                           class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
+                    <input type="text"
+                           name="lng_m"
+                           v-model="lngData.min"
+                           @input="validateNumericInput($event.target)"
+                           @blur="validateCNumericInput($event.target)"
+                           class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
+                    <input type="text"
+                           name="lng_s"
+                           v-model="lngData.sec"
+                           @input="validateNumericInput($event.target)"
+                           @blur="validateCNumericInput($event.target)"
+                           class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-16 h-7">
+                </div>
             </div>
-            <div v-if="sistemaC === 'decimales'" class="flex flex-row space-x-2">
+            <div v-if="sistemaC === 'decimales'" class="flex flex-row flex-wrap md:space-x-2">
                 <input
                     ref="inputLatitude"
-                    class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-44 h-7"
+                    class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-44 h-7 mb-4 md:mb-0"
                     type="text"
                     :value="lat"
                     @input="validateNumericInput($event.target); $emit('update:lat', parseFloat($event.target.value))"
@@ -203,14 +207,14 @@ const decToDms = (latData, lngData) => {
                 <span class="font-bold self-end">,</span>
                 <input
                     ref="inputLongitude"
-                    class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-44 h-7"
+                    class="border focus:ring-vxproject-secondary border-vxproject-secondary inline-block w-44 h-7 mb-4 md:mb-0"
                     type="text"
                     :value="lng"
                     @input="validateNumericInput($event.target); $emit('update:lng', parseFloat($event.target.value))"
                     placeholder="lng">
             </div>
             <button type="button" @click="onClickSearchButton()"
-                    class="vxproject-button">Buscar</button>
+                    class="vxproject-button mt-2 md:mt-0">Buscar</button>
         </div>
         <span class="text-xs text-red-500 block">{{ errorMessage }}</span>
     </div>
