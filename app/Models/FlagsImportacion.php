@@ -22,6 +22,7 @@ class FlagsImportacion extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id_flag_group',
         'import_log',
     ];
 }

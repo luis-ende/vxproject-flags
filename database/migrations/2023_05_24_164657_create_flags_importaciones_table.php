@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('flags_importaciones', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_flag_group')->constrained('flag_groups')->cascadeOnDelete();
             $table->json('import_log');
             $table->timestamps();
         });

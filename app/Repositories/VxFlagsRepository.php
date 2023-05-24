@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\FlagGroup;
 use App\Models\FlagGroupType;
+use App\Models\FlagsImportacion;
 use App\Models\VxFlagAttributes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -72,6 +73,12 @@ class VxFlagsRepository
     public function getVxFlagAttributes(int $vxFlagId) {
         return VxFlagAttributes::where('id_vx_flag', $vxFlagId)
                                     ->value('attributes');
+    }
+
+    public function getFlagsImportInfo(int $flagGroupId)
+    {
+        return FlagsImportacion::where('id_flag_group', $flagGroupId)
+                                    ->latest()->first();
     }
 
     protected function loadFlagsRegiones()

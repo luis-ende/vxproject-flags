@@ -41,22 +41,27 @@ class ImportaTiposSueloSitios extends Command
         }
 
         // TODO Id de grupo de flags (3) debe ser una constante o ser obtenida de otro lado
-        $import = new VxFlagsImport(3, FlagGroupType::TiposSuelo);
+        $flagGroupId = 3;
+        $import = new VxFlagsImport($flagGroupId, FlagGroupType::TiposSuelo);
+        $importInfo = [
+            'archivo' => $path,
+        ];
 
         try {
             Excel::import($import, $path);
             $importedRows = $import->getImportedRows();
-            $importInfo = [
-                'archivo' => $path,
-                'num_importados' => count($importedRows),
-                'importados_info' => $importedRows,
-            ];
-            FlagsImportacion::create([
-                'import_log' => json_encode($importInfo)
-            ]);
+            $importInfo['num_importados'] = count($importedRows);
+            $importInfo['importados_info'] = $importedRows;
+            $importInfo['status'] = 'Finalizado';
         } catch (\Throwable $e) {
             $this->error('Error de importación: ' . $e->getMessage());
+            $importInfo['status'] = 'Error: ' . $e->getMessage();
         }
+
+        FlagsImportacion::create([
+            'id_flag_group' => $flagGroupId,
+            'import_log' => json_encode($importInfo)
+        ]);
 
         $this->info('Proceso de importación de sitios del grupo Tipo de suelo finalizado exitosamente.');
     }

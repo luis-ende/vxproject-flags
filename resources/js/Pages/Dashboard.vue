@@ -260,7 +260,7 @@ const clearVxFlagInfoPanel = () => {
                             <div v-show="currentVxFlagInfo.active">
                                 <div v-show="currentVxFlagInfo.groupType === 1">
                                     <p class="uppercase font-bold text-lg my-10">Temperatura</p>
-                                    {{ vxFlagInfoTemperatura.temperatura }}
+                                    <p class="mb-10">{{ vxFlagInfoTemperatura.temperatura }}</p>
                                 </div>
                                 <div v-show="currentVxFlagInfo.groupType === 2">
                                     <FlagInfo

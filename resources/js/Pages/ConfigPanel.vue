@@ -9,6 +9,8 @@ import 'datatables.net-responsive';
 import ConfirmationModal from "../Components/ConfirmationModal.vue";
 import SecondaryButton from "../Components/SecondaryButton.vue";
 import DangerButton from "../Components/DangerButton.vue";
+import {DateTime} from "luxon";
+import FlagsImportLog from "../Components/Config/FlagsImportLog.vue";
 
 DataTable.use(DataTablesCore);
 
@@ -47,6 +49,9 @@ const props = defineProps({
         type: Array,
         default: [],
     },
+    tipoSueloSitiosImport: {
+        type: Object,
+    }
 });
 
 const vxFlags = reactive([] );
@@ -190,10 +195,12 @@ onMounted(() => {
                                 </div>
                             </section>
 
-<!--                            <section class="my-5 text-sm text-stone-700">-->
-<!--                                <p>Ultima importación de datos: 12May2023 22:33:11 </p>-->
-<!--                                <p>Archivo de importación de datos: /etc/filerun/abc.xlsx</p>-->
-<!--                            </section>-->
+                            <section v-show="currentGroup.type === 2">
+                                <FlagsImportLog
+                                        v-if="tipoSueloSitiosImport"
+                                        :tipo-suelo-sitios-import="tipoSueloSitiosImport"
+                                />
+                            </section>
 
                             <section>
                                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Sitios del grupo</h2>

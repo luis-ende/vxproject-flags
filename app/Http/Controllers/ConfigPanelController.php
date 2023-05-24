@@ -6,12 +6,13 @@ use App\Repositories\VxFlagsRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class AdminPanelController extends Controller
+class ConfigPanelController extends Controller
 {
     public function show(VxFlagsRepository $flagsRepo)
     {
         $flagsGroups = $flagsRepo->getFlagsGroups(false);
+        $tipoSueloSitiosImport = $flagsRepo->getFlagsImportInfo(3);
 
-        return Inertia::render('ConfigPanel', compact('flagsGroups'));
+        return Inertia::render('ConfigPanel', compact('flagsGroups', 'tipoSueloSitiosImport'));
     }
 }
