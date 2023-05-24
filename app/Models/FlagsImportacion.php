@@ -5,9 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VxFlagAttributes extends Model
+class FlagsImportacion extends Model
 {
     use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'flags_importaciones';
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +22,6 @@ class VxFlagAttributes extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id_vx_flag',
-        'attributes',
+        'import_log',
     ];
 }

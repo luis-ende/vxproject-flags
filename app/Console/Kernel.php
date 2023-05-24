@@ -12,7 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('vxproject:importa-tipos-suelo-sitios')
+                ->weekly()
+                ->sundays()
+                ->at('22:00');
     }
 
     /**

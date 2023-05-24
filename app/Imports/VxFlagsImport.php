@@ -16,11 +16,18 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
 {
     use GeoCalculatorService;
 
+    protected array $importedRows = [];
+
     public function __construct(
         protected int $flagGroupId,
         protected FlagGroupType $flagGroupType
     )
     {
+    }
+
+    public function getImportedRows(): array
+    {
+        return $this->importedRows;
     }
 
     /**
@@ -33,11 +40,16 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
         switch ($this->flagGroupType)
         {
             case FlagGroupType::TemperaturasCFE:
+                $this->importedRows[] = [
+                    'key' => $row['descripcion'],
+                    'action' => 'insert',
+                ];
                 return new VxFlag([
                     'id_flag_group' => $this->flagGroupId,
                     'longitude' => $row['longitud'],
                     'latitude' => $row['latitud'],
                     'description' => $row['descripcion'],
+                    'flag_key' => $row['descripcion'],
                 ]);
         }
 
@@ -56,16 +68,37 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
             unset($rows['17']);
             $descripcion = $row['sitio'] . "\n" . $row['sismo'] . " " . $row['zona'] . "-" . $row['tipo_terreno'];
             $jsonAttr = json_encode($rows);
-            $vxFlag = VxFlag::create([
-                'id_flag_group' => $this->flagGroupId,
-                'longitude' => $longitud,
-                'latitude' => $latitud,
-                'description' => $descripcion,
-            ]);
-            VxFlagAttributes::create([
-                'id_vx_flag' => $vxFlag->id,
-                'attributes' => $jsonAttr,
-            ]);
+            $flagKey = $row['sitio'];
+            $action = 'insert';
+
+            if (VxFlag::where('flag_key', $flagKey)->exists()) {
+                $action = 'update';
+            }
+
+            $vxFlag = VxFlag::updateOrCreate(
+                [
+                    'flag_key' => $flagKey,
+                ],
+                [
+                    'id_flag_group' => $this->flagGroupId,
+                    'longitude' => $longitud,
+                    'latitude' => $latitud,
+                    'description' => $descripcion,
+                ]
+            );
+            VxFlagAttributes::updateOrCreate(
+                [
+                    'id_vx_flag' => $vxFlag->id,
+                ],
+                [
+                    'attributes' => $jsonAttr,
+                ]
+            );
+
+            $this->importedRows[] = [
+                'key' => $flagKey,
+                'action' => $action,
+            ];
         }
     }
 

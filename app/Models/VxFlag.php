@@ -11,6 +11,19 @@ class VxFlag extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'id_flag_group',
+        'description',
+        'latitude',
+        'longitude',
+        'flag_key',
+    ];
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(FlagGroup::class, 'id_flag_group');
