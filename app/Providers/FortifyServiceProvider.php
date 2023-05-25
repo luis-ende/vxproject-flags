@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Actions\Fortify\LoginUserExists;
+use App\Actions\Fortify\RedirectIfTwoFactorAuthenticatable;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\SetUserUniqueSession;
 use App\Actions\Fortify\UpdateUserPassword;
@@ -15,7 +17,6 @@ use Inertia\Inertia;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
 use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
 use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
-use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
@@ -42,6 +43,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::loginThrough(function(Request $request) {
             return [
+                LoginUserExists::class,
                 config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
                 Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
                 AttemptToAuthenticate::class,
