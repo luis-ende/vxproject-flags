@@ -2,6 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 import '../css/svg.css';
 import '../sass/app.scss';
+import 'datatables.net-dt/css/jquery.dataTables.min.css'
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';

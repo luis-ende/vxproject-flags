@@ -14,12 +14,6 @@
                 integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
                 crossorigin=""></script>
 
-        @auth()
-            @if (!auth()->user()->getIsSubscriberAttribute())
-                <link href="https://cdn.datatables.net/v/dt/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
-            @endif
-        @endauth
-
         <!-- Fonts -->
         @googlefonts
         @googlefonts('montserrat')
