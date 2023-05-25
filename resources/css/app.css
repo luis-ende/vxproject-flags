@@ -13,3 +13,15 @@
         dark:bg-gray-800 dark:border-gray-700;
     }
 }
+
+/* Estilos Datatable */
+
+:root {
+    --dt-row-selected: 53, 0, 153;
+    --dt-row-selected-text: 255, 255, 255;
+    --dt-row-selected-link: 9, 10, 11;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    width: 70px;
+}
