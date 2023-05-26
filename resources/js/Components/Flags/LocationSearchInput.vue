@@ -152,7 +152,7 @@ const decToDms = (latData, lngData) => {
                 <label class="ml-2" for="dewey">Decimales</label>
             </div>
         </fieldset>
-        <div class="w-full flex flex-col md:flex-row md:justify-between">
+        <div class="w-full md:w-[570px] flex flex-col md:flex-row md:justify-between">
             <div v-if="sistemaC === 'grados'" class="w-full flex flex-row flex-wrap md:justify-between">
                 <div class="mb-4 md:mb-0 justify-between">
                     <input type="text"
