@@ -8,8 +8,8 @@ import 'datatables.net-select';
 import 'datatables.net-responsive';
 import ConfirmationModal from "../Components/ConfirmationModal.vue";
 import SecondaryButton from "../Components/SecondaryButton.vue";
-import DangerButton from "../Components/DangerButton.vue";
 import FlagsImportLog from "../Components/Config/FlagsImportLog.vue";
+import PrimaryButton from "../Components/PrimaryButton.vue";
 
 DataTable.use(DataTablesCore);
 
@@ -38,8 +38,8 @@ const flagsDataTableOptions = {
         url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json',
         select: {
             rows: {
-                _: "%d seleccionados",
-                1: "1 seleccionado"
+                _: " / %d seleccionados",
+                1: " / 1 seleccionado"
             }
         }
     },
@@ -258,14 +258,14 @@ onMounted(() => {
                         Cancelar
                     </SecondaryButton>
 
-                    <DangerButton
+                    <PrimaryButton
                             class="ml-3"
                             :class="{ 'opacity-25': deleteFlagForm.processing }"
                             :disabled="deleteFlagForm.processing"
                             @click="deleteFlag"
                     >
                         Eliminar
-                    </DangerButton>
+                    </PrimaryButton>
                 </template>
             </ConfirmationModal>
         </div>

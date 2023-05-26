@@ -65,7 +65,7 @@ const formatCoordinates = (text) => {
             </div>
         </div>
         <span class="block mt-10 mb-5 border-b border-b-vxproject-secondary">Descripción suelo:</span>
-        <div class="h-20 overflow-y-auto" v-html="flagInfo.descripcion_suelo">
+        <div class="h-16 overflow-y-auto" v-html="flagInfo.descripcion_suelo">
         </div>
         <span class="block mt-10 mb-5 border-b border-b-vxproject-secondary">Observaciones:</span>
         <div class="h-48 overflow-y-auto" v-html="flagInfo.observaciones">

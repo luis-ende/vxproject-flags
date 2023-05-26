@@ -4,7 +4,6 @@ import { router, useForm, usePage } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import ActionSection from '@/Components/ActionSection.vue';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
-import DangerButton from '@/Components/DangerButton.vue';
 import DialogModal from '@/Components/DialogModal.vue';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
@@ -348,14 +347,14 @@ const suscriptores = computed(() => {
                     Cancelar
                 </SecondaryButton>
 
-                <DangerButton
+                <PrimaryButton
                     class="ml-3"
                     :class="{ 'opacity-25': updateTeamMemberStatusForm.processing }"
                     :disabled="updateTeamMemberStatusForm.processing"
                     @click="updateTeamMemberStatus"
                 >
                     {{ teamMemberChangingStatus.active ? 'Desactivar' : 'Activar' }}
-                </DangerButton>
+                </PrimaryButton>
             </template>
         </ConfirmationModal>
 
@@ -374,14 +373,14 @@ const suscriptores = computed(() => {
                     Cancelar
                 </SecondaryButton>
 
-                <DangerButton
+                <PrimaryButton
                         class="ml-3"
                         :class="{ 'opacity-25': removeTeamMemberForm.processing }"
                         :disabled="removeTeamMemberForm.processing"
                         @click="removeTeamMember"
                 >
                     Eliminar
-                </DangerButton>
+                </PrimaryButton>
             </template>
         </ConfirmationModal>
     </div>
