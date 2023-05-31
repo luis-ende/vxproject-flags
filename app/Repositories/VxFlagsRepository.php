@@ -15,10 +15,6 @@ class VxFlagsRepository
 
     public function getFlagsGroups(bool $withFlags = true): array
     {
-        if ($withFlags) {
-            $this->loadFlagsRegiones();
-        }
-
         return FlagGroup::orderBy('id')
                            ->get()
                            ->map(function($flagGroup) use($withFlags) {
@@ -51,20 +47,12 @@ class VxFlagsRepository
     public function getVxFlagsByGroup(FlagGroup $flagGroup): array
     {
         return $flagGroup->flags->map(function($flag) {
-                $region = '';
-                if (isset($this->flagsRegiones)) {
-                    $attr = $this->flagsRegiones->firstWhere('id_vx_flag', $flag->id);
-                    if ($attr && $attr->region) {
-                        $region = $attr->region;
-                    }
-                }
-
                 return [
                     'id' => $flag->id,
                     'latitude' => $flag->latitude,
                     'longitude' => $flag->longitude,
                     'description' => $flag->description,
-                    'region' => $region,
+                    'region' => $flag->region,
                     'visible' => true,
                 ];
             })->toArray();
@@ -79,14 +67,5 @@ class VxFlagsRepository
     {
         return FlagsImportacion::where('id_flag_group', $flagGroupId)
                                     ->latest()->first();
-    }
-
-    protected function loadFlagsRegiones()
-    {
-        $this->flagsRegiones = VxFlagAttributes::select(
-            'id',
-            'id_vx_flag',
-            DB::raw("attributes->>'region' as region")
-        )->get();
     }
 }

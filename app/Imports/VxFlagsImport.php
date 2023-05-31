@@ -69,6 +69,7 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
             $descripcion = $row['sitio'] . "\n" . $row['sismo'] . " " . $row['zona'] . "-" . $row['tipo_terreno'];
             $jsonAttr = json_encode($rows);
             $flagKey = $row['sitio'];
+            $region = $row['region'];
             $action = 'insert';
 
             if (VxFlag::where('flag_key', $flagKey)->exists()) {
@@ -84,6 +85,7 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
                     'longitude' => $longitud,
                     'latitude' => $latitud,
                     'description' => $descripcion,
+                    'region' => $region,
                 ]
             );
             VxFlagAttributes::updateOrCreate(
