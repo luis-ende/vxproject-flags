@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class VxFlagsRepository
 {
-    protected Collection $flagsRegiones;
-
     public function getFlagsGroups(bool $withFlags = true): array
     {
         return FlagGroup::orderBy('id')
@@ -37,9 +35,6 @@ class VxFlagsRepository
     public function getVxFlagsByGroupId(int $groupId): array
     {
         $flagGroup = FlagGroup::findOrFail($groupId);
-        if ($flagGroup->type === FlagGroupType::TiposSuelo->value) {
-            $this->loadFlagsRegiones();
-        }
 
         return $this->getVxFlagsByGroup($flagGroup);
     }
