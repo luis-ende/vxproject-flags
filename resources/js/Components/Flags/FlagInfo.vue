@@ -55,7 +55,7 @@ const formatCoordinates = (text) => {
                     {{ flagInfo.df_min !== 'NA' ? parseFloat(flagInfo.df_min).toFixed(2).toString().padStart(5, '0') : 'NA' }}<span v-show="flagInfo.df_min !== 'NA'" class="lowercase">m</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary">Proyecto:</div>
-                <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
+                <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5 text-[0.775rem]">
                     {{ flagInfo.proyecto }}
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary">Altura:</div>
