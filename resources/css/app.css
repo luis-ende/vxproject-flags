@@ -12,6 +12,12 @@
         @apply border-2 rounded-lg border-vxproject-primary-light border-opacity-50 shadow-lg
         dark:bg-gray-800 dark:border-gray-700;
     }
+
+    .vxproject-link-primary {
+        @apply font-bold bg-white text-vxproject-primary no-underline
+        hover:bg-white hover:text-vxproject-secondary hover:no-underline
+        active:text-vxproject-secondary;
+    }
 }
 
 /* Estilos Datatable */

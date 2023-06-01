@@ -53,11 +53,10 @@ Route::middleware([
     Route::get('/vx-flags/group/{groupId}', [\App\Http\Controllers\FlagsController::class, 'getFlagsByGroup'])->name('vx-flags.group.list');
 });
 
-
 Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {
     if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
-        Route::get('/terms-of-service', [TermsOfServiceController::class, 'show'])->name('terms.show');
-        Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
+        Route::get('/terminos-de-uso', [TermsOfServiceController::class, 'show'])->name('terms.show');
+        Route::get('/politicas-de-privacidad', [PrivacyPolicyController::class, 'show'])->name('policy.show');
     }
 
     $authMiddleware = config('jetstream.guard')

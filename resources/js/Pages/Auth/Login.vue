@@ -9,6 +9,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import FieldLogo from "../../Components/FieldLogo.vue";
 import {computed} from "vue";
+import Footer from "../../Components/Footer.vue";
 
 const props = defineProps({
     canResetPassword: Boolean,
@@ -96,4 +97,6 @@ const userExpiredDeactivated = computed(() => props.status === 'user-expired-dea
             </div>
         </form>
     </AuthenticationCard>
+
+    <Footer />
 </template>

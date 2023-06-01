@@ -66,8 +66,6 @@ onMounted(() => {
     map = L.map('map').setView([searchLocation.lat, searchLocation.lng], searchLocation.zoom);
     map.on('click', onMapClick)
     map.on('dblclick', onMapDoubleClick)
-    // @todo Get url from global app settings
-    //L.tileLayer('https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=aoG5PxooEJs06nNutrZH', {
     L.tileLayer(props.mapLayerUrl, {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -126,7 +124,6 @@ const loadFlags = (group) => {
     group.flags.forEach(flag => {
         if (flag.visible) {
             let desc = flag.description.replace(/(\r\n|\r|\n)/g, '<br>');
-            //@debug desc = desc + ' id: ' + flag.id;
             let customIcon = L.divIcon({
                 ...defIcon,
                 html: `<div><svg fill="${group.color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M32 144a144 144 0 1 1 288 0A144 144 0 1 1 32 144zM176 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM144 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"></path></svg></div>`,

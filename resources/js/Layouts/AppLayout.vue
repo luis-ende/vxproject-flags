@@ -8,6 +8,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import OutmanAlert from "../Components/OutmanAlert.vue";
+import Footer from "../Components/Footer.vue";
 
 defineProps({
     title: String,
@@ -317,6 +318,8 @@ const logout = () => {
             <main>
                 <slot />
             </main>
+
+            <Footer />
         </div>
     </div>
 </template>

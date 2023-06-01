@@ -2,6 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import AuthenticationCardLogo from "../Components/AuthenticationCardLogo.vue";
 import FieldLogo from "../Components/FieldLogo.vue";
+import Footer from "../Components/Footer.vue";
 
 defineProps({
     canLogin: Boolean,
@@ -33,6 +34,7 @@ defineProps({
             <p class="text-center">
                 Si aún no formas parte de la comunidad de Field, contáctanos para brindarte información acerca de los planes de suscripción.
             </p>
+            <Footer />
         </div>
     </div>
 </template>
