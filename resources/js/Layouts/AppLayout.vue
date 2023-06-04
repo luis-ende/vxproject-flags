@@ -319,7 +319,7 @@ const logout = () => {
                 <slot />
             </main>
 
-            <Footer />
+            <Footer :fixed-bar="true"/>
         </div>
     </div>
 </template>

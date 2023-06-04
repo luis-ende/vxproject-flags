@@ -34,7 +34,8 @@ defineProps({
             <p class="text-center">
                 Si aún no formas parte de la comunidad de Field, contáctanos para brindarte información acerca de los planes de suscripción.
             </p>
-            <Footer />
         </div>
     </div>
+
+    <Footer />
 </template>

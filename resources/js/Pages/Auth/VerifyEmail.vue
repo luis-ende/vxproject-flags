@@ -5,6 +5,7 @@ import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import FieldLogo from "../../Components/FieldLogo.vue";
+import Footer from "../../Components/Footer.vue";
 
 const props = defineProps({
     status: String,
@@ -57,4 +58,6 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
             </div>
         </form>
     </AuthenticationCard>
+
+    <Footer />
 </template>
