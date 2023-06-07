@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import FlagsMap from "../Components/Flags/FlagsMap.vue";
 import FlagsGroupSelect from "../Components/Flags/FlagsGroupSelect.vue";
-import {onMounted, reactive, ref, toRaw} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import FlagInfo from "../Components/Flags/FlagInfo.vue";
 import LocationSearchInput from "../Components/Flags/LocationSearchInput.vue";
 import FieldLogo from "../Components/FieldLogo.vue";
@@ -66,6 +66,7 @@ const vxFlagInfoTemperatura = reactive({
 });
 const regionesDefault = reactive([]);
 const isLoading = ref(false);
+const isLoadingFlagInfo = ref(false);
 const loadError = ref('');
 
 onMounted(() => {
@@ -102,7 +103,7 @@ const groupsChange = async (groupId, checked) => {
     if (currentGroup.type === TIPO_GRUPO_TIPO_SUELO) {
         grupoTiposSueloActivo = checked;
         regionesDefault.length = 0;
-        regionesDefault.push('R9')
+        regionesDefault.push('R9');
         await regionesChange(regionesDefault);
     }
 };
@@ -201,7 +202,7 @@ const loadVxFlagInfo = (vxFlagId) => {
             });
             break;
         case TIPO_GRUPO_TIPO_SUELO:
-            isLoading.value = true;
+            isLoadingFlagInfo.value = true;
             fetch('/vx-flags/info/' + vxFlagId).then(res => res.json()).then(json => {
                 if (json.attributes) {
                     const vxFlagAttrs = JSON.parse(json.attributes);
@@ -216,7 +217,7 @@ const loadVxFlagInfo = (vxFlagId) => {
                     vxFlagInfoSuelo.observaciones =
                         vxFlagInfoSuelo.observaciones.replace(/(\r\n|\r|\n)/g, '<br>');
                 }
-                isLoading.value = false;
+                isLoadingFlagInfo.value = false;
             });
             break;
     }
@@ -296,7 +297,7 @@ const fetchGroupFlags = async (group, regiones = null) => {
                                 </div>
                                 <div v-show="currentVxFlagInfo.groupType === TIPO_GRUPO_TIPO_SUELO">
                                     <FlagInfo
-                                        :data-loading="isLoading"
+                                        :data-loading="isLoadingFlagInfo"
                                         :flag-info="vxFlagInfoSuelo"
                                     />
                                 </div>
