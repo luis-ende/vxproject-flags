@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamMemberController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -12,8 +11,6 @@ use Laravel\Jetstream\Http\Controllers\Inertia\CurrentUserController;
 use Laravel\Jetstream\Http\Controllers\Inertia\OtherBrowserSessionsController;
 use Laravel\Jetstream\Http\Controllers\Inertia\PrivacyPolicyController;
 use Laravel\Jetstream\Http\Controllers\Inertia\ProfilePhotoController;
-//use Laravel\Jetstream\Http\Controllers\Inertia\TeamController;
-//use Laravel\Jetstream\Http\Controllers\Inertia\TeamMemberController;
 use Laravel\Jetstream\Http\Controllers\Inertia\TermsOfServiceController;
 use Laravel\Jetstream\Http\Controllers\Inertia\UserProfileController;
 use Laravel\Jetstream\Http\Controllers\TeamInvitationController;
@@ -50,7 +47,7 @@ Route::middleware([
     Route::get('/vx-flags/info/{flagId}', [\App\Http\Controllers\FlagsController::class, 'getVxFlagInfo'])->name('vx-flags.info');
     Route::delete('/vx-flags/{flagId}', [\App\Http\Controllers\FlagsController::class, 'destroy'])->name('vx-flags.destroy');
     Route::put('/vx-flags/group/{groupId}', [\App\Http\Controllers\FlagsController::class, 'groupUpdate'])->name('vx-flags.group.update');
-    Route::get('/vx-flags/group/{groupId}', [\App\Http\Controllers\FlagsController::class, 'getFlagsByGroup'])->name('vx-flags.group.list');
+    Route::get('/vx-flags/group/{groupId}/list', [\App\Http\Controllers\FlagsController::class, 'getFlagsByGroup'])->name('vx-flags.group.list');
 });
 
 Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {

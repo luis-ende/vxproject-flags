@@ -12,8 +12,13 @@ class FlagsController extends Controller
     public function getFlagsByGroup(Request $request, VxFlagsRepository $flagsRepo, int $groupId)
     {
         try {
+            $regiones = null;
+            if ($request->has('reg')) {
+                $regiones = explode(',', $request->input('reg'));
+            }
+
             return response()->json([
-                'flags' =>$flagsRepo->getVxFlagsByGroupId($groupId),
+                'flags' =>$flagsRepo->getVxFlagsByGroupId($groupId, $regiones),
             ]);
         } catch(\Throwable $e) {
             return response()->json(['error' => 'Ocurrió un error al consultar flags'], 500);

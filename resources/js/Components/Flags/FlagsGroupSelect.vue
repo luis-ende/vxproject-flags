@@ -7,11 +7,18 @@ const emit = defineEmits(['groupsChange', 'regionesChange']);
 
 const tiposSueloSelected = ref(false);
 
-defineProps({
+const props = defineProps({
     groups: {
         type: Array,
         default: [],
     },
+    regionesDefault: {
+        type: Array,
+    },
+    dataLoading: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 const onGroupsSelected = (e) => {
@@ -33,15 +40,21 @@ const onRegionesChange = (regiones) => {
             <input type="checkbox"
                    :id="'group_' + index"
                    name="groups"
+                   :disabled="dataLoading"
                    @change="onGroupsSelected($event)"
                    class="w-5 h-5 text-vxproject-secondary border-vxproject-secondary focus:ring-vxproject-primary rounded-full"
+                   :class="{ 'opacity-25': dataLoading }"
                    :data-group="group.id"
                    :data-group-type="group.type">
-            <label :for="'group_' + index" class="uppercase ml-3">{{ group.name }}</label>
+            <label :for="'group_' + index" class="uppercase ml-3" :class="dataLoading ? 'text-stone-400' : ''">
+                {{ group.name }}
+            </label>
         </li>
     </ul>
     <div v-show="tiposSueloSelected" class="md:pl-24 block">
         <TiposSueloRegionesSelect
+                :data-loading="dataLoading"
+                :regiones-default="regionesDefault"
                 @regiones-change="onRegionesChange"/>
     </div>
 </template>

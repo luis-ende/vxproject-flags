@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\FlagGroup;
 use App\Models\FlagGroupType;
 use App\Models\FlagsImportacion;
+use App\Models\VxFlag;
 use App\Models\VxFlagAttributes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -26,17 +27,29 @@ class VxFlagsRepository
                                if ($withFlags) {
                                    $group['flags'] =
                                        $this->getVxFlagsByGroup($flagGroup);
+                               } else {
+                                   $group['flags'] = [];
                                }
 
                                return $group;
                            })->toArray();
     }
 
-    public function getVxFlagsByGroupId(int $groupId): array
+    public function getVxFlagsByGroupId(int $groupId, array $regiones = null): array
     {
-        $flagGroup = FlagGroup::findOrFail($groupId);
+        $query = VxFlag::select('id', 'latitude', 'longitude', 'description', 'region')
+                ->where('id_flag_group', $groupId);
 
-        return $this->getVxFlagsByGroup($flagGroup);
+        if ($regiones) {
+            $query = $query->whereIn('region', $regiones);
+        }
+
+        return $query->get()
+                     ->toArray();
+
+//        $flagGroup = FlagGroup::findOrFail($groupId);
+//
+//        return $this->getVxFlagsByGroup($flagGroup);
     }
 
     public function getVxFlagsByGroup(FlagGroup $flagGroup): array
@@ -48,7 +61,6 @@ class VxFlagsRepository
                     'longitude' => $flag->longitude,
                     'description' => $flag->description,
                     'region' => $flag->region,
-                    'visible' => true,
                 ];
             })->toArray();
     }

@@ -19,6 +19,10 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    dataLoading: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 const latData = reactive({
@@ -143,12 +147,16 @@ const decToDms = (latData, lngData) => {
             <div>
                 <input type="radio" id="grados" name="sistema_coordenadas" value="grados" v-model="sistemaC"
                        class="w-4 h-4 text-vxproject-secondary border-vxproject-secondary focus:ring-vxproject-secondary rounded-full"
-                       checked>
+                       checked
+                       :disabled="dataLoading"
+                       :class="{ 'opacity-25': dataLoading }">
                 <label class="ml-2" for="huey">Grados</label>
             </div>
             <div class="inline-block">
                 <input type="radio" id="decimales" name="sistema_coordenadas" value="decimales" v-model="sistemaC"
-                       class="w-4 h-4 text-vxproject-secondary border-vxproject-secondary focus:ring-vxproject-secondary rounded-full">
+                       class="w-4 h-4 text-vxproject-secondary border-vxproject-secondary focus:ring-vxproject-secondary rounded-full"
+                       :disabled="dataLoading"
+                       :class="{ 'opacity-25': dataLoading }">
                 <label class="ml-2" for="dewey">Decimales</label>
             </div>
         </fieldset>
@@ -213,8 +221,13 @@ const decToDms = (latData, lngData) => {
                     @input="validateNumericInput($event.target); $emit('update:lng', parseFloat($event.target.value))"
                     placeholder="lng">
             </div>
-            <button type="button" @click="onClickSearchButton()"
-                    class="vxproject-button w-32 h-8 md:ml-4 mt-2 md:mt-0">Buscar</button>
+            <button type="button"
+                    @click="onClickSearchButton()"
+                    class="vxproject-button w-32 h-8 md:ml-4 mt-2 md:mt-0"
+                    :disabled="dataLoading"
+                    :class="{ 'opacity-25': dataLoading }">
+                Buscar
+            </button>
         </div>
         <span v-show="errorMessage !== ''" class="text-xs text-red-500 block">{{ errorMessage }}</span>
     </div>

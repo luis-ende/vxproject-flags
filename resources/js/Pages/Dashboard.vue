@@ -17,6 +17,9 @@ const props = defineProps({
     }
 });
 
+const TIPO_GRUPO_TEMPERATURAS = 1;
+const TIPO_GRUPO_TIPO_SUELO = 2;
+
 // @todo Consider: https://stackoverflow.com/questions/73542576/leaflet-error-when-zooming-after-closing-popup
 let map = null;
 let markersGroup = [];
@@ -39,7 +42,7 @@ const violetIcon = new L.Icon({
 });
 const currentVxFlagInfo = reactive({
     active: false,
-    groupType: 2,
+    groupType: TIPO_GRUPO_TIPO_SUELO,
 });
 const vxFlagInfoSuelo = reactive({
     altura: null,
@@ -61,6 +64,9 @@ const vxFlagInfoSuelo = reactive({
 const vxFlagInfoTemperatura = reactive({
     temperatura: null,
 });
+const regionesDefault = reactive([]);
+const isLoading = ref(false);
+const loadError = ref('');
 
 onMounted(() => {
     map = L.map('map').setView([searchLocation.lat, searchLocation.lng], searchLocation.zoom);
@@ -82,31 +88,30 @@ const onMapDoubleClick = (e) => {
     setSearchLocation();
 }
 
-const groupsChange = (groupId, checked) => {
+const groupsChange = async (groupId, checked) => {
     const currentGroup = props.flagsGroups.find(g => g.id === groupId);
     if (checked) {
+        if (currentGroup.type !== TIPO_GRUPO_TIPO_SUELO) {
+            await fetchGroupFlags(currentGroup);
+        }
         loadFlags(currentGroup);
     } else {
         clearFlags(currentGroup);
     }
 
-    if (currentGroup.type === 2) {
+    if (currentGroup.type === TIPO_GRUPO_TIPO_SUELO) {
         grupoTiposSueloActivo = checked;
+        regionesDefault.length = 0;
+        regionesDefault.push('R9')
+        await regionesChange(regionesDefault);
     }
 };
 
-const regionesChange = (regiones) => {
+const regionesChange = async (regiones) => {
     if (grupoTiposSueloActivo) {
         const grupoTiposSuelo = props.flagsGroups.find(g => g.type === 2);
-        const sinFiltro = regiones.includes('R0');
-        grupoTiposSuelo.flags.forEach(flag => {
-            if (sinFiltro) {
-                flag.visible = true;
-            } else {
-                flag.visible = regiones.includes(flag.region);
-            }
-        })
         clearFlags(grupoTiposSuelo);
+        await fetchGroupFlags(grupoTiposSuelo, regiones);
         loadFlags(grupoTiposSuelo);
     }
 };
@@ -122,21 +127,19 @@ const loadFlags = (group) => {
 
     let layerMarkers = [];
     group.flags.forEach(flag => {
-        if (flag.visible) {
-            let desc = flag.description.replace(/(\r\n|\r|\n)/g, '<br>');
-            let customIcon = L.divIcon({
-                ...defIcon,
-                html: `<div><svg fill="${group.color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M32 144a144 144 0 1 1 288 0A144 144 0 1 1 32 144zM176 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM144 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"></path></svg></div>`,
-            });
-            let marker = L.marker([flag.latitude, flag.longitude], {
-                icon: customIcon,
-                vxFlagId: flag.id
-            });
-            marker.on('click', onMarkerClick);
-            layerMarkers.push(marker);
-            marker.addTo(map);
-            marker.bindPopup(desc);
-        }
+        let desc = flag.description.replace(/(\r\n|\r|\n)/g, '<br>');
+        let customIcon = L.divIcon({
+            ...defIcon,
+            html: `<div><svg fill="${group.color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M32 144a144 144 0 1 1 288 0A144 144 0 1 1 32 144zM176 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM144 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"></path></svg></div>`,
+        });
+        let marker = L.marker([flag.latitude, flag.longitude], {
+            icon: customIcon,
+            vxFlagId: flag.id
+        });
+        marker.on('click', onMarkerClick);
+        layerMarkers.push(marker);
+        marker.addTo(map);
+        marker.bindPopup(desc);
     });
 
     markersGroup.push({
@@ -152,6 +155,7 @@ const clearFlags = (group) => {
         map.removeLayer(marker);
     });
     markersGroup = markersGroup.filter(gm => gm.id !== group.id);
+    group.flags = [];
 };
 
 const setSearchLocation = () => {
@@ -185,7 +189,7 @@ const onMarkerClick = (e) => {
 
 const loadVxFlagInfo = (vxFlagId) => {
     switch (currentVxFlagInfo.groupType) {
-        case 1:
+        case TIPO_GRUPO_TEMPERATURAS:
             props.flagsGroups.every(fg => {
                 const vxFlag = fg.flags.find(f => f.id === vxFlagId);
                 if (vxFlag) {
@@ -196,7 +200,8 @@ const loadVxFlagInfo = (vxFlagId) => {
                 return true;
             });
             break;
-        case 2:
+        case TIPO_GRUPO_TIPO_SUELO:
+            isLoading.value = true;
             fetch('/vx-flags/info/' + vxFlagId).then(res => res.json()).then(json => {
                 if (json.attributes) {
                     const vxFlagAttrs = JSON.parse(json.attributes);
@@ -211,6 +216,7 @@ const loadVxFlagInfo = (vxFlagId) => {
                     vxFlagInfoSuelo.observaciones =
                         vxFlagInfoSuelo.observaciones.replace(/(\r\n|\r|\n)/g, '<br>');
                 }
+                isLoading.value = false;
             });
             break;
     }
@@ -219,6 +225,31 @@ const loadVxFlagInfo = (vxFlagId) => {
 const clearVxFlagInfoPanel = () => {
     currentVxFlagInfo.active = false;
 }
+
+const fetchGroupFlags = async (group, regiones = null) => {
+    let queryParams = '';
+    if (regiones) {
+        if (! regiones.includes('R0')) {
+            queryParams = '?reg=' + regiones.join(',');
+        }
+    }
+
+    isLoading.value = true;
+    await fetch(route('vx-flags.group.list', [group.id]) + queryParams).then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            isLoading.value = false;
+            loadError.value = res.statusText;
+        }
+    })
+    .then(json => {
+        if (json && json.flags) {
+            group.flags = json.flags;
+        }
+        isLoading.value = false;
+    })
+};
 
 </script>
 
@@ -236,6 +267,7 @@ const clearVxFlagInfoPanel = () => {
                     <div class="flex flex-col md:flex-row min-h-screen md:h-[850px]">
                         <div class="md:basis-2/3 p-5 h-[450px] md:h-full">
                             <FlagsMap
+                                :data-loading="isLoading"
                                 :map="map"
                             />
                         </div>
@@ -244,23 +276,27 @@ const clearVxFlagInfoPanel = () => {
                                 <LocationSearchInput
                                     v-model:lat="searchLocation.lat"
                                     v-model:lng="searchLocation.lng"
+                                    :data-loading="isLoading"
                                     @search="setSearchLocation"
                                 />
                             </div>
                             <div class="my-5">
                                 <FlagsGroupSelect
                                     :groups="flagsGroups"
+                                    :regiones-default="regionesDefault"
+                                    :data-loading="isLoading"
                                     @groups-change="groupsChange"
                                     @regiones-change="regionesChange"
                                 />
                             </div>
                             <div v-show="currentVxFlagInfo.active">
-                                <div v-show="currentVxFlagInfo.groupType === 1">
+                                <div v-show="currentVxFlagInfo.groupType === TIPO_GRUPO_TEMPERATURAS">
                                     <p class="uppercase font-bold text-lg my-10">Temperatura</p>
                                     <p class="mb-10">{{ vxFlagInfoTemperatura.temperatura }}</p>
                                 </div>
-                                <div v-show="currentVxFlagInfo.groupType === 2">
+                                <div v-show="currentVxFlagInfo.groupType === TIPO_GRUPO_TIPO_SUELO">
                                     <FlagInfo
+                                        :data-loading="isLoading"
                                         :flag-info="vxFlagInfoSuelo"
                                     />
                                 </div>
