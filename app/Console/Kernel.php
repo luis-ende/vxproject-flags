@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('vxproject:importa-tipos-suelo-sitios')
                 ->weekly()
                 ->sundays()
+                ->timezone('America/Mexico_City')
                 ->at('22:00');
     }
 
