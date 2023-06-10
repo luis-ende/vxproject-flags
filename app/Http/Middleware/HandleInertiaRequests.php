@@ -33,9 +33,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $teamSubscribersId = Cache::rememberForever('team_subscribers_id', function() {
-            return Team::firstWhere('name', TeamType::Suscriptores)->value('id');
-        });
+        $teamSubscribersId = null;
+        if (auth()->user()) {
+            $teamSubscribersId = Cache::rememberForever('team_subscribers_id', function() {
+                return Team::firstWhere('name', TeamType::Suscriptores)->value('id');
+            });
+        }
 
         return array_merge(parent::share($request), [
             'ziggy' => function () use ($request) {
