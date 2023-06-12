@@ -75,7 +75,7 @@ onMounted(() => {
     map.on('dblclick', onMapDoubleClick)
     L.tileLayer(props.mapLayerUrl, {
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap</a>'
     }).addTo(map)
 });
 
