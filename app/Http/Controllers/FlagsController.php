@@ -6,6 +6,7 @@ use App\Models\FlagGroup;
 use App\Models\VxFlag;
 use App\Repositories\VxFlagsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class FlagsController extends Controller
 {
@@ -48,6 +49,13 @@ class FlagsController extends Controller
         FlagGroup::where('id', $groupId)->update([
             'color' => $request->input('color')
         ]);
+
+        return back(303);
+    }
+
+    public function flagsTiposSueloImport()
+    {
+        Artisan::call('vxproject:importa-tipos-suelo-sitios');
 
         return back(303);
     }

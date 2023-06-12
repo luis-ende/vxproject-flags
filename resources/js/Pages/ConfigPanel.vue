@@ -138,13 +138,24 @@ const deleteFlag = () => {
     }
 };
 
+const importFinished = () => {
+    localStorage.setItem('currentGroupId', currentGroup.id);
+    window.location.reload();
+}
+
 onMounted(() => {
     dt = flagsDatatable.value.dt;
     dt.on('click', 'td.editor-delete', function (e) {
         e.preventDefault();
         rowBeingRemoved.value = true;
     });
-    setCurrentGroup(props.flagsGroups[0].id);
+
+    if (localStorage.getItem('currentGroupId')) {
+        const groupId = parseInt(localStorage.getItem('currentGroupId'));
+        setCurrentGroup(groupId);
+    } else {
+        setCurrentGroup(props.flagsGroups[0].id);
+    }
 });
 
 </script>
@@ -206,6 +217,7 @@ onMounted(() => {
                                 <FlagsImportLog
                                         v-if="tipoSueloSitiosImport"
                                         :tipo-suelo-sitios-import="tipoSueloSitiosImport"
+                                        @import-finished="importFinished"
                                 />
                             </section>
 

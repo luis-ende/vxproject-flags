@@ -48,6 +48,7 @@ Route::middleware([
     Route::delete('/vx-flags/{flagId}', [\App\Http\Controllers\FlagsController::class, 'destroy'])->name('vx-flags.destroy');
     Route::put('/vx-flags/group/{groupId}', [\App\Http\Controllers\FlagsController::class, 'groupUpdate'])->name('vx-flags.group.update');
     Route::get('/vx-flags/group/{groupId}/list', [\App\Http\Controllers\FlagsController::class, 'getFlagsByGroup'])->name('vx-flags.group.list');
+    Route::post('/vx-flags/tipos-suelo/import', [\App\Http\Controllers\FlagsController::class, 'flagsTiposSueloImport'])->name('vx-flags.tipos-suelo.import');
 });
 
 Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {
