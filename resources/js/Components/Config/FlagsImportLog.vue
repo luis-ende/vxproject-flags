@@ -32,7 +32,7 @@ const formatDate = (date) => {
             <p>Archivo: {{ tipoSueloImportLog?.archivo }}</p>
             <p>Estatus: {{ tipoSueloImportLog?.status }}</p>
             <p>Renglones procesados: {{ tipoSueloImportLog?.num_importados }}</p>
-            <table v-if="tipoSueloImportLog?.importados_info.length > 0" class="table-auto mt-3">
+            <table v-if="tipoSueloImportLog?.importados_info?.length > 0" class="table-auto mt-3">
                 <thead>
                     <tr>
                         <th>Id</th>
