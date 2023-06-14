@@ -26,8 +26,8 @@ let markersGroup = [];
 let currentLocationMarker = null;
 let grupoTiposSueloActivo = false;
 let searchLocation = reactive({
-    lat: 19.3886,
-    lng: -99.16335,
+    lat: 19.43262,
+    lng: -99.13317,
     zoom: 6,
 });
 const violetIcon = new L.Icon({
