@@ -150,14 +150,14 @@ const decToDms = (latData, lngData) => {
                        checked
                        :disabled="dataLoading"
                        :class="{ 'opacity-25': dataLoading }">
-                <label class="ml-2" for="huey">Grados</label>
+                <label class="ml-2" for="grados">Grados</label>
             </div>
             <div class="inline-block">
                 <input type="radio" id="decimales" name="sistema_coordenadas" value="decimales" v-model="sistemaC"
                        class="w-4 h-4 text-vxproject-secondary border-vxproject-secondary focus:ring-vxproject-secondary rounded-full"
                        :disabled="dataLoading"
                        :class="{ 'opacity-25': dataLoading }">
-                <label class="ml-2" for="dewey">Decimales</label>
+                <label class="ml-2" for="decimales">Decimales</label>
             </div>
         </fieldset>
         <div class="w-full md:w-[570px] flex flex-col md:flex-row md:justify-between">
