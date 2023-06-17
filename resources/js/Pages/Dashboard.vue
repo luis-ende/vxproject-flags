@@ -1,4 +1,7 @@
 <script setup>
+import L from "leaflet";
+import 'leaflet/dist/leaflet.css';
+
 import AppLayout from '@/Layouts/AppLayout.vue';
 import FlagsMap from "../Components/Flags/FlagsMap.vue";
 import FlagsGroupSelect from "../Components/Flags/FlagsGroupSelect.vue";

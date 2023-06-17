@@ -9,9 +9,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
-import { DateTime } from "luxon";
-
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'VX Project - Flags';
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'VX Project Field';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
