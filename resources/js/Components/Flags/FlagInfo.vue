@@ -50,7 +50,7 @@ const formatCoordinates = (text) => {
                 <div class="text-right border-b border-b-vxproject-secondary">Capacidad:</div>
                 <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
                     {{ flagInfo.capacidad !== 'NA' ? parseFloat(flagInfo.capacidad).toFixed(2) : 'NA' }}
-                    <span v-show="flagInfo.capacidad !== 'NA'" class="lowercase">t/m&#179;</span>
+                    <span v-show="flagInfo.capacidad !== 'NA'" class="lowercase">t/m&#178;</span>
                 </div>
                 <div class="text-right border-b border-b-vxproject-secondary"><span class="lowercase">Ø</span> Terreno:</div>
                 <div class="md:col-span-2 border-b border-b-vxproject-secondary pl-5">
