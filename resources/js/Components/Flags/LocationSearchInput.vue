@@ -39,17 +39,24 @@ const lngData = reactive({
 
 const errorMessage = ref('');
 
+let isUpdatingDmsToDec = false;
+
 onMounted(() => {
     updateDecToDms();
 });
 
 watch(() => props.lng, () => {
-    updateDecToDms();
+    if (!isUpdatingDmsToDec) {
+        updateDecToDms();
+    }
+
+    isUpdatingDmsToDec = false;
 })
 
 const onClickSearchButton = () => {
     let coordinates = { lat: props.lat, lng: props.lng }
     if (sistemaC.value === 'grados') {
+        isUpdatingDmsToDec = true;
         coordinates = dmsToDec(latData, lngData);
     } else if (sistemaC.value === 'decimales') {
         updateDecToDms();
@@ -94,8 +101,8 @@ const validateCNumericInput = (i) => {
     }
 
     if (i.name.endsWith('_m') || i.name.endsWith('_s')) {
-        if (!(i.value >= 0 && i.value <= 59)) {
-            errorMessage.value = 'Rango permitido: entre 0 y 59.';
+        if (!(i.value >= 0 && i.value <= 60)) {
+            errorMessage.value = 'Rango permitido: entre 0 y 60.';
             i.focus();
         }
     }
