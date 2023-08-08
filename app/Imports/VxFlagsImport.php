@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\FlagGroupType;
 use App\Models\VxFlag;
 use App\Models\VxFlagAttributes;
+use App\Repositories\CatPaisesRepository;
 use App\Services\GeoCalculatorService;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -20,7 +21,8 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
 
     public function __construct(
         protected int $flagGroupId,
-        protected FlagGroupType $flagGroupType
+        protected FlagGroupType $flagGroupType,
+        protected CatPaisesRepository $catPaisesRepository
     )
     {
     }
@@ -70,6 +72,11 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
             $jsonAttr = json_encode($rows);
             $flagKey = $row['sitio'];
             $region = trim($row['region']);
+            $paisCode = trim($row['pais']);
+            $paisId = $this->catPaisesRepository->getPaisId($paisCode);
+            if (!$paisId) {
+                throw new \Exception('Código de país no encontrado: ' . $paisCode);
+            }
             $action = 'insert';
 
             if (VxFlag::where('flag_key', $flagKey)->exists()) {
@@ -86,6 +93,7 @@ class VxFlagsImport implements ToModel, WithHeadingRow, OnEachRow, WithCalculate
                     'latitude' => $latitud,
                     'description' => $descripcion,
                     'region' => $region,
+                    'id_pais' => $paisId,
                 ]
             );
             VxFlagAttributes::updateOrCreate(

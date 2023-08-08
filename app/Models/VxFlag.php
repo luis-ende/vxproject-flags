@@ -23,6 +23,7 @@ class VxFlag extends Model
         'longitude',
         'flag_key',
         'region',
+        'id_pais',
     ];
 
     public function group(): BelongsTo

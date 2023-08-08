@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Imports\VxFlagsImport;
 use App\Models\FlagGroupType;
 use App\Models\FlagsImportacion;
+use App\Repositories\CatPaisesRepository;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Facades\Excel;
@@ -42,7 +43,7 @@ class ImportaTiposSueloSitios extends Command
 
         // TODO Id de grupo de flags (3) debe ser una constante o ser obtenida de otro lado
         $flagGroupId = 3;
-        $import = new VxFlagsImport($flagGroupId, FlagGroupType::TiposSuelo);
+        $import = new VxFlagsImport($flagGroupId, FlagGroupType::TiposSuelo, new CatPaisesRepository());
         $importInfo = [
             'archivo' => $path,
         ];
