@@ -2,10 +2,9 @@
 
 import TiposSueloRegionesSelect from "./TiposSueloRegionesSelect.vue";
 import {ref} from "vue";
+import TiposSueloPaisesSelect from "./TiposSueloPaisesSelect.vue";
 
-const emit = defineEmits(['groupsChange', 'regionesChange']);
-
-const tiposSueloSelected = ref(false);
+const emit = defineEmits(['groupsChange', 'regionesChange', 'paisChange']);
 
 const props = defineProps({
     groups: {
@@ -15,11 +14,21 @@ const props = defineProps({
     regionesDefault: {
         type: Array,
     },
+    paisIdDefault: {
+        type: Number,
+    },
+    paises: {
+        type: Array,
+        default: [],
+    },
     dataLoading: {
         type: Boolean,
         default: false,
     }
 });
+
+const tiposSueloSelected = ref(false);
+let paisSelected = ref(props.paisIdDefault);
 
 const onGroupsSelected = (e) => {
     if (parseInt(e.target.dataset.groupType) === 2) {
@@ -30,6 +39,11 @@ const onGroupsSelected = (e) => {
 
 const onRegionesChange = (regiones) => {
     emit('regionesChange', regiones);
+};
+
+const onPaisChange = (paisCode) => {
+    paisSelected.value = paisCode;
+    emit('paisChange', paisCode);
 };
 
 </script>
@@ -52,9 +66,16 @@ const onRegionesChange = (regiones) => {
         </li>
     </ul>
     <div v-show="tiposSueloSelected" class="md:pl-24 block">
-        <TiposSueloRegionesSelect
+        <TiposSueloPaisesSelect
+            :paises="paises"
+            :data-loading="dataLoading"
+            @pais-change="onPaisChange"
+        />
+        <div v-show="paisSelected === paisIdDefault">
+            <TiposSueloRegionesSelect
                 :data-loading="dataLoading"
                 :regiones-default="regionesDefault"
                 @regiones-change="onRegionesChange"/>
+        </div>
     </div>
 </template>

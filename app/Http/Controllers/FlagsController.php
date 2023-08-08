@@ -14,12 +14,17 @@ class FlagsController extends Controller
     {
         try {
             $regiones = null;
-            if ($request->has('reg')) {
+            $paisId = null;
+            if ($request->has('pais')) {
+                $paisId = $request->input('pais');
+            }
+
+            if ($request->has('reg') && $request->get('reg') !== 'R0') {
                 $regiones = explode(',', $request->input('reg'));
             }
 
             return response()->json([
-                'flags' =>$flagsRepo->getVxFlagsByGroupId($groupId, $regiones),
+                'flags' =>$flagsRepo->getVxFlagsByGroupId($groupId, $paisId, $regiones),
             ]);
         } catch(\Throwable $e) {
             return response()->json(['error' => 'Ocurrió un error al consultar flags'], 500);

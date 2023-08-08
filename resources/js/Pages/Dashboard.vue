@@ -11,6 +11,13 @@ import LocationSearchInput from "../Components/Flags/LocationSearchInput.vue";
 import FieldLogo from "../Components/FieldLogo.vue";
 
 const props = defineProps({
+    tiposSueloPaises: {
+        type: Array,
+        default: [],
+    },
+    paisIdDefault: {
+        type: Number,
+    },
     flagsGroups: {
         type: Array,
         default: [],
@@ -22,6 +29,7 @@ const props = defineProps({
 
 const TIPO_GRUPO_TEMPERATURAS = 1;
 const TIPO_GRUPO_TIPO_SUELO = 2;
+const PAIS_PREDETERMINADO_CODE = props.paisIdDefault;
 
 // @todo Consider: https://stackoverflow.com/questions/73542576/leaflet-error-when-zooming-after-closing-popup
 let map = null;
@@ -71,6 +79,7 @@ const regionesDefault = reactive([]);
 const isLoading = ref(false);
 const isLoadingFlagInfo = ref(false);
 const loadError = ref('');
+let currentPais = PAIS_PREDETERMINADO_CODE;
 
 onMounted(() => {
     map = L.map('map').setView([searchLocation.lat, searchLocation.lng], searchLocation.zoom);
@@ -106,7 +115,11 @@ const groupsChange = async (groupId, checked) => {
     if (currentGroup.type === TIPO_GRUPO_TIPO_SUELO) {
         grupoTiposSueloActivo = checked;
         regionesDefault.length = 0;
-        regionesDefault.push('R9');
+        if (currentPais === PAIS_PREDETERMINADO_CODE) {
+            regionesDefault.push('R9');
+        } else {
+            regionesDefault.push('R0');
+        }
         await regionesChange(regionesDefault);
     }
 };
@@ -117,6 +130,22 @@ const regionesChange = async (regiones) => {
         clearFlags(grupoTiposSuelo);
         await fetchGroupFlags(grupoTiposSuelo, regiones);
         loadFlags(grupoTiposSuelo);
+    }
+};
+
+const paisChange = async (paisCode) => {
+    currentPais = paisCode;
+    regionesDefault.length = 0;
+    if (currentPais === PAIS_PREDETERMINADO_CODE) {
+        regionesDefault.push('R9');
+    } else {
+        regionesDefault.push('R0');
+    }
+    await regionesChange(regionesDefault);
+    const grupoTiposSuelo = props.flagsGroups.find(g => g.type === 2);
+    if (grupoTiposSuelo && grupoTiposSuelo.flags.length > 0) {
+        const flag = grupoTiposSuelo.flags[0];
+        map.setView([flag.latitude, flag.longitude], 6);
     }
 };
 
@@ -233,9 +262,9 @@ const clearVxFlagInfoPanel = () => {
 const fetchGroupFlags = async (group, regiones = null) => {
     let queryParams = '';
     if (regiones) {
-        if (! regiones.includes('R0')) {
-            queryParams = '?reg=' + regiones.join(',');
-        }
+        //if (! regiones.includes('R0')) {
+            queryParams = '?reg=' + regiones.join(',') + '&pais=' + currentPais;
+        //}
     }
 
     isLoading.value = true;
@@ -287,10 +316,13 @@ const fetchGroupFlags = async (group, regiones = null) => {
                             <div class="my-5">
                                 <FlagsGroupSelect
                                     :groups="flagsGroups"
+                                    :paises="tiposSueloPaises"
+                                    :pais-id-default="PAIS_PREDETERMINADO_CODE"
                                     :regiones-default="regionesDefault"
                                     :data-loading="isLoading"
                                     @groups-change="groupsChange"
                                     @regiones-change="regionesChange"
+                                    @pais-change="paisChange"
                                 />
                             </div>
                             <div v-show="currentVxFlagInfo.active">

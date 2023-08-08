@@ -27,4 +27,10 @@ class CatPaisesRepository {
             return null;
         }
     }
+
+    public function getPaisDefaultId(): int {
+        return Cache::rememberForever('id_pais_default', function () {
+            return $this->paises->firstWhere('codigo_iso', 'MEX')->id;
+        });
+    }
 }

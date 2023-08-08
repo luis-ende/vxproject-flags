@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\FlagGroup;
-use App\Models\FlagGroupType;
 use App\Models\FlagsImportacion;
 use App\Models\VxFlag;
 use App\Models\VxFlagAttributes;
@@ -35,10 +34,14 @@ class VxFlagsRepository
                            })->toArray();
     }
 
-    public function getVxFlagsByGroupId(int $groupId, array $regiones = null): array
+    public function getVxFlagsByGroupId(int $groupId, ?int $paisId, array $regiones = null): array
     {
         $query = VxFlag::select('id', 'latitude', 'longitude', 'description', 'region')
                 ->where('id_flag_group', $groupId);
+
+        if ($paisId !== null) {
+            $query = $query->where('id_pais', $paisId);
+        }
 
         if ($regiones) {
             $query = $query->whereIn('region', $regiones);
@@ -46,10 +49,6 @@ class VxFlagsRepository
 
         return $query->get()
                      ->toArray();
-
-//        $flagGroup = FlagGroup::findOrFail($groupId);
-//
-//        return $this->getVxFlagsByGroup($flagGroup);
     }
 
     public function getVxFlagsByGroup(FlagGroup $flagGroup): array
@@ -74,5 +73,12 @@ class VxFlagsRepository
     {
         return FlagsImportacion::where('id_flag_group', $flagGroupId)
                                     ->latest()->first();
+    }
+
+    public function getPaises(): Collection {
+        return DB::table('vx_flags')
+                    ->select(DB::raw('DISTINCT(cat_paises.pais)'), 'cat_paises.id')
+                    ->join('cat_paises', 'vx_flags.id_pais', 'cat_paises.id')
+                    ->get();
     }
 }
