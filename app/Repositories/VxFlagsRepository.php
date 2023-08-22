@@ -79,6 +79,7 @@ class VxFlagsRepository
         return DB::table('vx_flags')
                     ->select(DB::raw('DISTINCT(cat_paises.pais)'), 'cat_paises.id')
                     ->join('cat_paises', 'vx_flags.id_pais', 'cat_paises.id')
+                    ->orderBy('pais')
                     ->get();
     }
 }

@@ -69,6 +69,7 @@ const onPaisChange = (paisCode) => {
         <TiposSueloPaisesSelect
             :paises="paises"
             :data-loading="dataLoading"
+            :pais-id-default="paisIdDefault"
             @pais-change="onPaisChange"
         />
         <div v-show="paisSelected === paisIdDefault">

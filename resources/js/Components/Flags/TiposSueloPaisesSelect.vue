@@ -9,6 +9,9 @@ const props = defineProps({
       type: Array,
       default: [],
     },
+    paisIdDefault: {
+        type: Number,
+    },
     dataLoading: {
         type: Boolean,
         default: false,
@@ -29,7 +32,8 @@ onMounted(() => {
         <label for="paises-select" class="w-20 uppercase mr-3">País:</label>
         <select id="paises-select"
                 class="border focus:ring-vxproject-secondary border-vxproject-secondary w-fit">
-            <option v-for="pais in paises" :value="pais.id" :key="pais.id">
+            <option v-for="pais in paises" :value="pais.id" :key="pais.id"
+                    :selected="pais.id === paisIdDefault">
                 {{ pais.pais.toUpperCase() }}
             </option>
         </select>
