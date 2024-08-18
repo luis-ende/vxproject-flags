@@ -21,6 +21,7 @@ class VxFlagsRepository
                                    'type' => $flagGroup->type,
                                    'name' => $flagGroup->nombre,
                                    'color' => $flagGroup->color,
+                                   'config' => json_decode($flagGroup->config),
                                ];
 
                                if ($withFlags) {

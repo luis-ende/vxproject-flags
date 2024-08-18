@@ -10,6 +10,7 @@ import ConfirmationModal from "../Components/ConfirmationModal.vue";
 import SecondaryButton from "../Components/SecondaryButton.vue";
 import FlagsImportLog from "../Components/Config/FlagsImportLog.vue";
 import PrimaryButton from "../Components/PrimaryButton.vue";
+import TiposSueloColoresConfig from "../Components/Config/TiposSueloColoresConfig.vue";
 
 DataTable.use(DataTablesCore);
 
@@ -221,13 +222,15 @@ onMounted(() => {
                                                        placeholder="Nombre del grupo"
                                                        disabled>
                                             </div>
-                                            <div class="w-full">
+                                            <div class="sm:col-span-2">
                                                 <label for="color" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Color</label>
                                                 <input type="color"
                                                        name="color"
                                                        id="color"
                                                        @change="updateGroup"
                                                        v-model="updateGroupForm.color">
+                                                <TiposSueloColoresConfig v-if="currentGroup.type === 2 && currentGroup?.config?.sites_colors"
+                                                                         :colors="currentGroup.config.sites_colors" :group-id="currentGroup.id" />
                                             </div>
                                         </div>
                                     </form>

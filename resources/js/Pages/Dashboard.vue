@@ -158,12 +158,15 @@ const loadFlags = (group) => {
         className: 'vxproject-address-flag',
     };
 
+    const sitesColors = group.type === TIPO_GRUPO_TIPO_SUELO && group?.config?.sites_colors ? group.config.sites_colors : null
+
     let layerMarkers = [];
     group.flags.forEach(flag => {
         let desc = flag.description.replace(/(\r\n|\r|\n)/g, '<br>');
+        let groupColor = getFlagColor(group, flag, sitesColors)
         let customIcon = L.divIcon({
             ...defIcon,
-            html: `<div><svg fill="${group.color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M32 144a144 144 0 1 1 288 0A144 144 0 1 1 32 144zM176 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM144 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"></path></svg></div>`,
+            html: `<div><svg fill="${groupColor}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M32 144a144 144 0 1 1 288 0A144 144 0 1 1 32 144zM176 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM144 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"></path></svg></div>`,
         });
         let marker = L.marker([flag.latitude, flag.longitude], {
             icon: customIcon,
@@ -283,6 +286,19 @@ const fetchGroupFlags = async (group, regiones = null) => {
         isLoading.value = false;
     })
 };
+
+const getFlagColor = (group, flag, sitesColors = null) => {
+    let color = group.color
+    if (sitesColors && group.type === TIPO_GRUPO_TIPO_SUELO && flag.region !== 'R0') {
+        const items = flag.description.trim().split(" ")
+        const zonaTipoTerreno = items.length > 0 ? items[items.length - 1] : ''
+        if (sitesColors[zonaTipoTerreno]) {
+            color = sitesColors[zonaTipoTerreno]
+        }
+    }
+
+    return color
+}
 
 </script>
 
