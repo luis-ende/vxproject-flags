@@ -6,6 +6,7 @@ use App\Models\FlagGroup;
 use App\Models\FlagsImportacion;
 use App\Models\VxFlag;
 use App\Models\VxFlagAttributes;
+use App\Models\VxFlagNotes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -68,6 +69,12 @@ class VxFlagsRepository
     public function getVxFlagAttributes(int $vxFlagId) {
         return VxFlagAttributes::where('id_vx_flag', $vxFlagId)
                                     ->value('attributes');
+    }
+
+    public function getVxFlagNotes(int $vxFlagId, $userId): ?string {
+        return VxFlagNotes::where('id_vx_flag', $vxFlagId)
+                            ->where('user_id', $userId)
+                            ->value('notes');
     }
 
     public function getFlagsImportInfo(int $flagGroupId)

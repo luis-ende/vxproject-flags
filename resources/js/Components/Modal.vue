@@ -10,6 +10,10 @@ const props = defineProps({
         type: String,
         default: '2xl',
     },
+    customPosition: {
+        type: String,
+        default: '',
+    },
     closeable: {
         type: Boolean,
         default: true,
@@ -45,6 +49,10 @@ onUnmounted(() => {
     document.body.style.overflow = null;
 });
 
+const position = computed(() => {
+    return props.customPosition !== '' ? props.customPosition : 'inset-0';
+});
+
 const maxWidthClass = computed(() => {
     return {
         'sm': 'sm:max-w-sm',
@@ -59,7 +67,9 @@ const maxWidthClass = computed(() => {
 <template>
     <teleport to="body">
         <transition leave-active-class="duration-200">
-            <div v-show="show" class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50" scroll-region>
+            <div v-show="show"
+                 :class="`fixed ${position} overflow-y-auto px-4 py-6 sm:px-0 z-50`"
+                 scroll-region>
                 <transition
                     enter-active-class="ease-out duration-300"
                     enter-from-class="opacity-0"

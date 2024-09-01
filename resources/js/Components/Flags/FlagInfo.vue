@@ -1,4 +1,6 @@
 <script setup>
+import FlagNotes from '../Flags/FlagNotes.vue'
+
 const props = defineProps({
     flagInfo: Object,
     dataLoading: {
@@ -30,7 +32,10 @@ const formatCoordinates = (text) => {
         <span class="sr-only">Loading...</span>
     </div>
     <div v-show="!dataLoading" class="uppercase text-sm">
-        <span class="block my-7 text-base md:text-lg font-bold">Sitio existente</span>
+        <div class="flex flex-row my-7">
+            <span class="basis-1/2 text-base md:text-lg font-bold">Sitio existente</span>
+            <FlagNotes :flag-info="flagInfo" :data-loading="dataLoading" />
+        </div>
         <div class="flex flex-col md:flex-row md:space-x-10">
             <div class="md:basis-1/2 grid grid-cols-2 grid-rows-6">
                 <div class="text-right border-b border-b-vxproject-secondary">Sitio:</div>

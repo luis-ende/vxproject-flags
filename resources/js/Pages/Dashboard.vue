@@ -56,6 +56,7 @@ const currentVxFlagInfo = reactive({
     groupType: TIPO_GRUPO_TIPO_SUELO,
 });
 const vxFlagInfoSuelo = reactive({
+    id: null,
     altura: null,
     capacidad: null,
     d_terreno: null,
@@ -249,6 +250,7 @@ const loadVxFlagInfo = (vxFlagId) => {
                             vxFlagInfoSuelo[k] = vxFlagAttrs[k];
                         }
                     });
+                    vxFlagInfoSuelo.id = vxFlagId
                     vxFlagInfoSuelo.observaciones =
                         vxFlagInfoSuelo.observaciones.replace(/(\r\n|\r|\n)/g, '<br>');
                 }

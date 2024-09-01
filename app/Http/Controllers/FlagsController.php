@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\FlagGroup;
 use App\Models\VxFlag;
+use App\Models\VxFlagNotes;
 use App\Repositories\VxFlagsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
 class FlagsController extends Controller
 {
@@ -38,6 +40,13 @@ class FlagsController extends Controller
         ]);
     }
 
+    public function getVxFlagNotes(int $vxFlagId, VxFlagsRepository $flagsRepo): \Illuminate\Http\JsonResponse
+    {
+        return response()->json([
+            'notes' => $flagsRepo->getVxFlagNotes($vxFlagId, Auth::user()->id),
+        ]);
+    }
+
     public function destroy(int $vxFlagId)
     {
         VxFlag::where('id', $vxFlagId)->delete();
@@ -56,6 +65,26 @@ class FlagsController extends Controller
         ]);
 
         return back(303);
+    }
+
+    public function updateVxFlagNotes(Request $request, int $vxFlagId)
+    {
+        $this->validate($request, [
+            'notes' => 'required|string'
+        ]);
+
+        VxFlagNotes::upsert([
+            [
+                'id_vx_flag' => $vxFlagId,
+                'user_id' => Auth::user()->id,
+                'notes' => $request->input('notes'),
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ], ['id_vx_flag', 'user_id'], ['notes', 'created_at', 'updated_at']);
+
+        return back(303);
+        //return response()->json(true);
     }
 
     public function flagsTiposSueloImport()

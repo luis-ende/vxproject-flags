@@ -12,6 +12,10 @@ defineProps({
         type: String,
         default: '2xl',
     },
+    customPosition: {
+        type: String,
+        default: '',
+    },
     closeable: {
         type: Boolean,
         default: true,
@@ -28,6 +32,7 @@ const close = () => {
         :show="show"
         :max-width="maxWidth"
         :closeable="closeable"
+        :custom-position="customPosition"
         @close="close"
     >
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
