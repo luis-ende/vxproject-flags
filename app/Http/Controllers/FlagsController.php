@@ -69,22 +69,25 @@ class FlagsController extends Controller
 
     public function updateVxFlagNotes(Request $request, int $vxFlagId)
     {
-        $this->validate($request, [
-            'notes' => 'required|string'
-        ]);
-
-        VxFlagNotes::upsert([
-            [
-                'id_vx_flag' => $vxFlagId,
-                'user_id' => Auth::user()->id,
-                'notes' => $request->input('notes'),
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ], ['id_vx_flag', 'user_id'], ['notes', 'created_at', 'updated_at']);
+        $userId = Auth::user()->id;
+        $notes = $request->input('notes');
+        if ($notes && $notes !== "") {
+            VxFlagNotes::upsert([
+                [
+                    'id_vx_flag' => $vxFlagId,
+                    'user_id' => $userId,
+                    'notes' => $notes,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+            ], ['id_vx_flag', 'user_id'], ['notes', 'created_at', 'updated_at']);
+        } else {
+            VxFlagNotes::where('id_vx_flag', $vxFlagId)
+                        ->where('user_id', $userId)
+                        ->delete();
+        }
 
         return back(303);
-        //return response()->json(true);
     }
 
     public function flagsTiposSueloImport()
