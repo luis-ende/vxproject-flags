@@ -1,10 +1,13 @@
 <script setup>
 
-import {ref, watch} from "vue";
+import {ref, watch, computed} from "vue";
 import ConfirmationModal from "../ConfirmationModal.vue";
 import SecondaryButton from "../SecondaryButton.vue";
 import PrimaryButton from "../PrimaryButton.vue";
 import {router} from "@inertiajs/vue3";
+import { useFlagInfoStore } from '../../stores/FlagInfoStore'
+
+const flagInfoStore = useFlagInfoStore()
 
 const props = defineProps({
     flagInfo: Object,
@@ -15,9 +18,18 @@ const props = defineProps({
 });
 
 const flagNotes = ref('')
-const flagNotesDialog = ref(false)
+const flagNotesDialog = computed({
+    get() {
+        return flagInfoStore.flagInfoNotesDialogShow
+    },
+    set(newValue) {
+        flagInfoStore.flagInfoNotesDialogShow = newValue
+    }
+})
+const successUpdate = ref(false);
 
 const loadFlagNotes = () => {
+    successUpdate.value = false
     fetch('/vx-flags/notes/' + props.flagInfo.id).then(res => res.json()).then(json => {
         if (json.notes) {
             flagNotes.value = json.notes
@@ -32,7 +44,7 @@ const updateFlagNotes = () => {
     router.put(`/vx-flags/notes/${props.flagInfo.id}`, data, {
         only: ['dashboard'],
         preserveScroll: true,
-        onSuccess: () => flagNotesDialog.value = false
+        onSuccess: () => successUpdate.value = true
     })
 }
 
@@ -64,21 +76,23 @@ watch(props.flagInfo, (value) => {
         </button>
     </div>
 
-    <ConfirmationModal :show="flagNotesDialog === true" icon="none" @close="flagNotesDialog = false"
+    <ConfirmationModal :show="flagNotesDialog === true" icon="none"
                        max-width="md" custom-position="top-1/2 right-0 bottom-0 left-1/9">
         <template #title>
-            Editar notas del sitio
+            <span class="text-sm">Notas del sitio {{ flagInfo.sitio }}</span>
         </template>
 
         <template #content>
             <textarea
                 v-model="flagNotes"
-                class="border focus:ring-vxproject-secondary border-vxproject-secondary" />
+                class="border focus:ring-vxproject-secondary border-vxproject-secondary"
+                @input="successUpdate = false" />
+            <span v-if="successUpdate"  class="block text-xs text-green-600">Sitio actualizado</span>
         </template>
 
         <template #footer>
             <SecondaryButton @click="flagNotesDialog = false">
-                Cancelar
+                Cerrar
             </SecondaryButton>
 
             <PrimaryButton
@@ -86,7 +100,7 @@ watch(props.flagInfo, (value) => {
                 class="ml-3"
                 @click="updateFlagNotes()"
             >
-                Guardar
+                Actualizar
             </PrimaryButton>
         </template>
     </ConfirmationModal>
