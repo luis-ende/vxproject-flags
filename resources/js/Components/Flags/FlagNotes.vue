@@ -4,7 +4,7 @@ import {ref, watch} from "vue";
 import ConfirmationModal from "../ConfirmationModal.vue";
 import SecondaryButton from "../SecondaryButton.vue";
 import PrimaryButton from "../PrimaryButton.vue";
-import {useForm, router} from "@inertiajs/vue3";
+import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     flagInfo: Object,
@@ -21,6 +21,8 @@ const loadFlagNotes = () => {
     fetch('/vx-flags/notes/' + props.flagInfo.id).then(res => res.json()).then(json => {
         if (json.notes) {
             flagNotes.value = json.notes
+        } else {
+            flagNotes.value = null
         }
     })
 }
@@ -42,6 +44,12 @@ watch(flagNotesDialog, (value) => {
     }
 })
 
+watch(props.flagInfo, (value) => {
+    if (flagNotesDialog.value === true) {
+        loadFlagNotes()
+    }
+})
+
 </script>
 
 <template>
@@ -56,7 +64,7 @@ watch(flagNotesDialog, (value) => {
         </button>
     </div>
 
-    <ConfirmationModal :show="flagNotesDialog === true" @close="flagNotesDialog = false"
+    <ConfirmationModal :show="flagNotesDialog === true" icon="none" @close="flagNotesDialog = false"
                        max-width="md" custom-position="top-1/2 right-0 bottom-0 left-1/9">
         <template #title>
             Editar notas del sitio
