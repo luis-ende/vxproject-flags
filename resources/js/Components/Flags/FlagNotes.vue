@@ -27,16 +27,18 @@ const flagNotesDialog = computed({
     }
 })
 const successUpdate = ref(false);
+const notesLoading = ref(false);
 
 const loadFlagNotes = () => {
     successUpdate.value = false
+    notesLoading.value = true
     fetch('/vx-flags/notes/' + props.flagInfo.id).then(res => res.json()).then(json => {
         if (json.notes) {
             flagNotes.value = json.notes
         } else {
             flagNotes.value = null
         }
-    })
+    }).finally(() => notesLoading.value = false)
 }
 
 const updateFlagNotes = () => {
@@ -83,7 +85,9 @@ watch(props.flagInfo, (value) => {
         </template>
 
         <template #content>
+            <span class="block text-gray-700" v-if="notesLoading">Cargando notas...</span>
             <textarea
+                v-if="!notesLoading"
                 v-model="flagNotes"
                 class="border focus:ring-vxproject-secondary border-vxproject-secondary"
                 @input="successUpdate = false" />
